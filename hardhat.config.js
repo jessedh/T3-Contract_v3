@@ -1,76 +1,43 @@
-// hardhat.config.js
-require("@nomicfoundation/hardhat-toolbox");
-require("dotenv").config(); // Loads variables from .env into process.env
-require("hardhat-gas-reporter"); // <--- Added gas reporter plugin
+require("@nomicfoundation/hardhat-ethers");
+require("@openzeppelin/hardhat-upgrades"); // For upgradeable contracts
+require("dotenv").config(); // To load .env variables
+require("@nomicfoundation/hardhat-chai-matchers");
 
-// Ensure required environment variables are present
-const sepoliaRpcUrl = process.env.SEPOLIA_RPC_URL;
-const wallet1PrivateKey = process.env.WALLET1_PRIVATE_KEY;
-const coinMarketCapApiKey = process.env.COINMARKETCAP_API_KEY; // For gas price conversion
-const etherscanApiKey = process.env.ETHERSCAN_API_KEY; // For Etherscan integration
-
-if (!sepoliaRpcUrl) {
-  console.warn("SEPOLIA_RPC_URL not found in .env file. Sepolia network disabled.");
-}
-if (!wallet1PrivateKey) {
-  console.warn("WALLET1_PRIVATE_KEY not found in .env file. Sepolia network disabled.");
-}
-if (!coinMarketCapApiKey) {
-  console.warn("COINMARKETCAP_API_KEY not found in .env file. Gas price conversion to USD disabled.");
-}
-// Add warning for Etherscan key if planning to use it
-// if (!etherscanApiKey) {
-//   console.warn("ETHERSCAN_API_KEY not found in .env file.");
-// }
-
-
+/** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: {
-    version: "0.8.20", // Use your specific version
+    version: "0.8.24", // Ensure this matches your contract's pragma
     settings: {
       optimizer: {
         enabled: true,
         runs: 200,
       },
-      viaIR: true, // Correctly enables viaIR compilation pipeline
     },
   },
+  defaultNetwork: "hardhat",
   networks: {
-    hardhat: {
-      // Default network, runs in-memory
+    hardhat: {},
+    fuji: {
+      url: process.env.FUJI_RPC_URL || "https://api.avax-test.network/ext/bc/C/rpc",
+      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+      chainId: 43113,
     },
-    localhost: {
-      // Network for running 'npx hardhat node'
-      url: "http://127.0.0.1:8545/",
-      // accounts: Hardhat node provides accounts automatically
-      chainId: 31337, // Default chain ID for hardhat node
-    },
-    // Only include sepolia if credentials are provided
-    ...(sepoliaRpcUrl && wallet1PrivateKey && {
-      sepolia: {
-        url: sepoliaRpcUrl,
-        accounts: [wallet1PrivateKey],
-        chainId: 11155111, // Sepolia chain ID
-      }
-    }),
+    // You can add mainnet config later
+    // avalancheMainnet: {
+    //   url: 'https://api.avax.network/ext/bc/C/rpc',
+    //   accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    //   chainId: 43114,
+    // }
   },
-
-  // --- Gas Reporter Configuration ---
-  gasReporter: {
-    // Set enabled to false to disable running the reporter by default
-    // You can enable it when needed by setting environment variable: REPORT_GAS=true
-    enabled: (process.env.REPORT_GAS === 'true') ? true : false,
-    currency: 'USD', // Show gas costs estimated in USD
-    coinmarketcap: coinMarketCapApiKey, // API key to fetch gas price info
-    outputFile: 'gas-report.txt', // Save the report to a file
-    noColors: true, // Disable colors in the output file
-    // excludeContracts: [], // Optional: Add contract names to exclude
+  etherscan: { // Used for Snowtrace (Avalanche's Etherscan equivalent)
+    apiKey: {
+      avalancheFujiTestnet: process.env.SNOWTRACE_API_KEY || "0x19d5Dab464B7C6a4d95f16898f133559C123F253", // Snowtrace uses 'apiKey' object format
+      // avalanche: process.env.SNOWTRACE_API_KEY // For mainnet
+    }
   },
-  // ---------------------------------
-
-  // --- Etherscan Configuration (Example) ---
-  // etherscan: {
-  //   apiKey: etherscanApiKey,
-  // },
-  // ---------------------------------------
+  // If you are using hardhat-verify with custom chains (like Fuji before official support was robust)
+  // you might need this, but typically the above etherscan block is enough now.
+  // sourcify: {
+  //   enabled: true
+  // }
 };
