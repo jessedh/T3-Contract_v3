@@ -39,6 +39,14 @@ module.exports = {
       // avalanche: process.env.SNOWTRACE_API_KEY // For mainnet
     }
   },
+  gasReporter: {
+    reportFormat: "markdown",
+    outputFile: "gasReport.md"
+    //,
+    //forceTerminalOutput: false,
+    //forceTerminalOutputFormat: "terminal"
+  }
+  
   // If you are using hardhat-verify with custom chains (like Fuji before official support was robust)
   // you might need this, but typically the above etherscan block is enough now.
   // sourcify: {

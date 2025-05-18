@@ -1,0 +1,490 @@
+{
+ "stats": {
+  "suites": 7,
+  "tests": 34,
+  "passes": 34,
+  "pending": 0,
+  "failures": 0
+ },
+ "tests": [
+  {
+   "title": "Should set the correct admin roles on CustodianRegistry",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token CustodianRegistry Deployment and Initialization Should set the correct admin roles on CustodianRegistry",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow admin to grant and revoke CUSTODIAN_ROLE",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token CustodianRegistry Deployment and Initialization Should allow admin to grant and revoke CUSTODIAN_ROLE",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow a custodian to register and unregister a wallet",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token CustodianRegistry Functionality Should allow a custodian to register and unregister a wallet",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow a custodian to update KYC status",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token CustodianRegistry Functionality Should allow a custodian to update KYC status",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should correctly report KYC validity (expired and no expiry)",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token CustodianRegistry Functionality Should correctly report KYC validity (expired and no expiry)",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should prevent non-custodians from registering wallets",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token CustodianRegistry Functionality Should prevent non-custodians from registering wallets",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should prevent updating KYC by a non-registered custodian",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token CustodianRegistry Functionality Should prevent updating KYC by a non-registered custodian",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should set the correct token name and symbol",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Deployment and Initialization Should set the correct token name and symbol",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should set the correct admin and pauser roles on T3Token",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Deployment and Initialization Should set the correct admin and pauser roles on T3Token",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should set the treasury address",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Deployment and Initialization Should set the treasury address",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should mint initial supply to the admin (or specified recipient)",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Deployment and Initialization Should mint initial supply to the admin (or specified recipient)",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should set HalfLife parameters correctly",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Deployment and Initialization Should set HalfLife parameters correctly",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow admin to set treasury address",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Core Functionality Should allow admin to set treasury address",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow admin to set HalfLife parameters",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Core Functionality Should allow admin to set HalfLife parameters",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow a minter to mint tokens",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Core Functionality Should allow a minter to mint tokens",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow transfers with fee deduction (paid from balance)",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Core Functionality Should allow transfers with fee deduction (paid from balance)",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should respect HalfLife: prevent transfer during commit window to other than originator",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Core Functionality Should respect HalfLife: prevent transfer during commit window to other than originator",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow reversal within HalfLife window by originator",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Core Functionality Should allow reversal within HalfLife window by originator",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should process HalfLife expiry and distribute loyalty credits",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Core Functionality Should process HalfLife expiry and distribute loyalty credits",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow pauser to pause and unpause transfers",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Core Functionality Should allow pauser to pause and unpause transfers",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow burning of tokens by owner of tokens",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Core Functionality Should allow burning of tokens by owner of tokens",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow burning of tokens via burnFrom after approval",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Core Functionality Should allow burning of tokens via burnFrom after approval",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow a user to pre-fund fees",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) Should allow a user to pre-fund fees",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow a user to withdraw pre-funded fees",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) Should allow a user to withdraw pre-funded fees",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should revert if withdrawing more pre-funded fees than available",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) Should revert if withdrawing more pre-funded fees than available",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Transfer: Fee fully covered by pre-funded amount",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) Transfer: Fee fully covered by pre-funded amount",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Transfer: Fee partially by pre-fund, then by credits, then by balance",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) Transfer: Fee partially by pre-fund, then by credits, then by balance",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should fail to transfer if total cost (amount + fee_from_balance) exceeds balance, even with some prefund/credits",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) Should fail to transfer if total cost (amount + fee_from_balance) exceeds balance, even with some prefund/credits",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should fail to transfer zero amount",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) Should fail to transfer zero amount",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should fail to transfer to the zero address",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) Should fail to transfer to the zero address",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should fail to transfer more than balance (considering fee from balance)",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) Should fail to transfer more than balance (considering fee from balance)",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Admin should be able to upgrade the T3Token contract",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Upgradeability (UUPS) Admin should be able to upgrade the T3Token contract",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Non-admin should not be able to upgrade the T3Token contract",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Upgradeability (UUPS) Non-admin should not be able to upgrade the T3Token contract",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Admin should be able to upgrade the CustodianRegistry contract",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Upgradeability (UUPS) Admin should be able to upgrade the CustodianRegistry contract",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  }
+ ],
+ "failures": [],
+ "passes": [
+  {
+   "title": "Should set the correct admin roles on CustodianRegistry",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token CustodianRegistry Deployment and Initialization Should set the correct admin roles on CustodianRegistry",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow admin to grant and revoke CUSTODIAN_ROLE",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token CustodianRegistry Deployment and Initialization Should allow admin to grant and revoke CUSTODIAN_ROLE",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow a custodian to register and unregister a wallet",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token CustodianRegistry Functionality Should allow a custodian to register and unregister a wallet",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow a custodian to update KYC status",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token CustodianRegistry Functionality Should allow a custodian to update KYC status",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should correctly report KYC validity (expired and no expiry)",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token CustodianRegistry Functionality Should correctly report KYC validity (expired and no expiry)",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should prevent non-custodians from registering wallets",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token CustodianRegistry Functionality Should prevent non-custodians from registering wallets",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should prevent updating KYC by a non-registered custodian",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token CustodianRegistry Functionality Should prevent updating KYC by a non-registered custodian",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should set the correct token name and symbol",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Deployment and Initialization Should set the correct token name and symbol",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should set the correct admin and pauser roles on T3Token",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Deployment and Initialization Should set the correct admin and pauser roles on T3Token",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should set the treasury address",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Deployment and Initialization Should set the treasury address",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should mint initial supply to the admin (or specified recipient)",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Deployment and Initialization Should mint initial supply to the admin (or specified recipient)",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should set HalfLife parameters correctly",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Deployment and Initialization Should set HalfLife parameters correctly",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow admin to set treasury address",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Core Functionality Should allow admin to set treasury address",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow admin to set HalfLife parameters",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Core Functionality Should allow admin to set HalfLife parameters",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow a minter to mint tokens",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Core Functionality Should allow a minter to mint tokens",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow transfers with fee deduction (paid from balance)",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Core Functionality Should allow transfers with fee deduction (paid from balance)",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should respect HalfLife: prevent transfer during commit window to other than originator",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Core Functionality Should respect HalfLife: prevent transfer during commit window to other than originator",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow reversal within HalfLife window by originator",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Core Functionality Should allow reversal within HalfLife window by originator",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should process HalfLife expiry and distribute loyalty credits",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Core Functionality Should process HalfLife expiry and distribute loyalty credits",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow pauser to pause and unpause transfers",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Core Functionality Should allow pauser to pause and unpause transfers",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow burning of tokens by owner of tokens",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Core Functionality Should allow burning of tokens by owner of tokens",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow burning of tokens via burnFrom after approval",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Core Functionality Should allow burning of tokens via burnFrom after approval",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow a user to pre-fund fees",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) Should allow a user to pre-fund fees",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow a user to withdraw pre-funded fees",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) Should allow a user to withdraw pre-funded fees",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should revert if withdrawing more pre-funded fees than available",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) Should revert if withdrawing more pre-funded fees than available",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Transfer: Fee fully covered by pre-funded amount",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) Transfer: Fee fully covered by pre-funded amount",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Transfer: Fee partially by pre-fund, then by credits, then by balance",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) Transfer: Fee partially by pre-fund, then by credits, then by balance",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should fail to transfer if total cost (amount + fee_from_balance) exceeds balance, even with some prefund/credits",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) Should fail to transfer if total cost (amount + fee_from_balance) exceeds balance, even with some prefund/credits",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should fail to transfer zero amount",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) Should fail to transfer zero amount",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should fail to transfer to the zero address",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) Should fail to transfer to the zero address",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should fail to transfer more than balance (considering fee from balance)",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) Should fail to transfer more than balance (considering fee from balance)",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Admin should be able to upgrade the T3Token contract",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Upgradeability (UUPS) Admin should be able to upgrade the T3Token contract",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Non-admin should not be able to upgrade the T3Token contract",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Upgradeability (UUPS) Non-admin should not be able to upgrade the T3Token contract",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Admin should be able to upgrade the CustodianRegistry contract",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Upgradeability (UUPS) Admin should be able to upgrade the CustodianRegistry contract",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  }
+ ]
+}
