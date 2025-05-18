@@ -7,6 +7,8 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol"
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol"; 
+import "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol";
+
 
 /**
  * @title T3Token (T3USD) - Upgradeable Version with Pre-funded Stablecoin Fee Logic
@@ -208,10 +210,10 @@ contract T3Token is Initializable, ERC20PausableUpgradeable, AccessControlUpgrad
 
     function transferFrom(address from, address to, uint256 amountIntendedForRecipient) public virtual override whenNotPaused returns (bool) {
         address spender = _msgSender();
-        // Note: Allowance needs to cover amountIntendedForRecipient + any feePaidFromBalanceNow.
-        // The _handleFeePayment function will check the total cost against sender's balance.
-        // _spendAllowance here only covers the amountIntendedForRecipient part initially.
-        // The super._transfer for feePaidFromBalanceNow will effectively check allowance for that part if `from` is not `spender`.
+        // Allowance must cover amountIntendedForRecipient + any feePaidFromBalanceNow from 'from' account
+        // The _handleFeePaymentAndTransfers will check the final balance of 'from'
+        // _spendAllowance only checks for amountIntendedForRecipient here.
+        // If fee is paid from balance, the super._transfer inside _handleFeePaymentAndTransfers will fail if allowance is insufficient for that part.
         _spendAllowance(from, spender, amountIntendedForRecipient); 
         _ensureProfileExists(from);
         _ensureProfileExists(to);
@@ -219,12 +221,9 @@ contract T3Token is Initializable, ERC20PausableUpgradeable, AccessControlUpgrad
         return true;
     }
 
-    /**
-     * @dev Internal helper to calculate the total fee assessed for a transaction.
-     */
     function _calculateTotalFeeAssessed(
-        address sender, // Used for risk calculation
-        address recipient, // Used for risk calculation
+        address sender, 
+        address recipient, 
         uint256 amountIntendedForRecipient
     ) internal view returns (uint256) {
         uint256 baseFee = calculateBaseFeeAmount(amountIntendedForRecipient);
@@ -243,10 +242,6 @@ contract T3Token is Initializable, ERC20PausableUpgradeable, AccessControlUpgrad
         return totalFee;
     }
 
-    /**
-     * @dev Internal helper to handle fee payment logic and token transfers.
-     * Returns amounts paid from prefund, credits, and balance.
-     */
     function _handleFeePaymentAndTransfers(
         address sender,
         address recipient,
@@ -255,7 +250,6 @@ contract T3Token is Initializable, ERC20PausableUpgradeable, AccessControlUpgrad
     ) internal returns (uint256 feePaidFromPrefund, uint256 feePaidFromCredits, uint256 feePaidFromBalance) {
         uint256 remainingFeeToCover = totalFeeAssessed;
 
-        // Try to use pre-funded balance first
         if (remainingFeeToCover > 0 && prefundedFeeBalances[sender] > 0) {
             uint256 takeFromPrefund = (remainingFeeToCover < prefundedFeeBalances[sender]) ? remainingFeeToCover : prefundedFeeBalances[sender];
             prefundedFeeBalances[sender] -= takeFromPrefund;
@@ -264,17 +258,15 @@ contract T3Token is Initializable, ERC20PausableUpgradeable, AccessControlUpgrad
             if (takeFromPrefund > 0) emit PrefundedFeeUsed(sender, takeFromPrefund);
         }
 
-        // Try to use incentive credits for any remaining fee
         if (remainingFeeToCover > 0) {
             (uint256 feeAfterCreditsApplied, uint256 creditsApplied) = applyCredits(sender, remainingFeeToCover);
             feePaidFromCredits = creditsApplied;
-            feePaidFromBalance = feeAfterCreditsApplied; // This is what's left to pay from balance
+            feePaidFromBalance = feeAfterCreditsApplied; 
             if (creditsApplied > 0) emit IncentiveCreditUsed(sender, creditsApplied);
         }
 
-        // Execute Transfers
         uint256 totalCostToSenderFromBalance = amountIntendedForRecipient + feePaidFromBalance;
-        uint256 senderCurrentBalance = balanceOf(sender);
+        uint256 senderCurrentBalance = balanceOf(sender); 
         if (senderCurrentBalance < totalCostToSenderFromBalance) {
             revert ERC20InsufficientBalance(sender, senderCurrentBalance, totalCostToSenderFromBalance);
         }
@@ -289,16 +281,13 @@ contract T3Token is Initializable, ERC20PausableUpgradeable, AccessControlUpgrad
         return (feePaidFromPrefund, feePaidFromCredits, feePaidFromBalance);
     }
     
-    /**
-     * @dev Internal helper to update metadata after a transfer.
-     */
     function _updatePostTransferMetadata(
         address sender,
         address recipient,
         uint256 amountIntendedForRecipient,
         uint256 finalTotalFeeAssessed
     ) internal {
-        transactionCountBetween[sender][recipient]++; // This was the line causing stack too deep before refactor
+        transactionCountBetween[sender][recipient]++; 
         uint256 adaptiveHalfLife = calculateAdaptiveHalfLife(sender, recipient, amountIntendedForRecipient);
 
         transferData[recipient] = TransferMetadata({
@@ -441,7 +430,7 @@ contract T3Token is Initializable, ERC20PausableUpgradeable, AccessControlUpgrad
         uint256 baseFeeAmount,
         address sender,
         address recipient,
-        uint256 amount // amount here is amountIntendedForRecipient
+        uint256 amount 
     ) internal view returns (uint256 feeAfterRisk) {
          if (baseFeeAmount == 0) return 0;
          uint256 riskScoreSender = calculateRiskFactor(sender);
@@ -616,7 +605,7 @@ contract T3Token is Initializable, ERC20PausableUpgradeable, AccessControlUpgrad
         uint256 baseFee = calculateBaseFeeAmount(amountIntendedForRecipient);
         uint256 feeAfterRiskCalc = applyRiskAdjustments(baseFee, sender, recipient, amountIntendedForRecipient);
         
-        details.totalFeeAssessed = feeAfterRiskCalc; // This is the fee before bounds specifically for this estimation step
+        details.totalFeeAssessed = feeAfterRiskCalc; 
         details.maxFeeBound = (amountIntendedForRecipient * MAX_FEE_PERCENT_BPS) / BASIS_POINTS;
         if (details.totalFeeAssessed > details.maxFeeBound) { 
             details.totalFeeAssessed = details.maxFeeBound; 
@@ -630,10 +619,10 @@ contract T3Token is Initializable, ERC20PausableUpgradeable, AccessControlUpgrad
              if (details.minFeeBound <= details.maxFeeBound && details.minFeeBound <= amountIntendedForRecipient) { 
                   details.totalFeeAssessed = details.minFeeBound; 
                   details.minFeeApplied = true;
-                  if (details.totalFeeAssessed >= details.maxFeeBound) { // Re-check maxFeeApplied if minFee was applied and is equal/greater than max
+                  if (details.totalFeeAssessed >= details.maxFeeBound) { 
                       details.maxFeeApplied = true; 
                   } else {
-                      details.maxFeeApplied = false; // Ensure it's false if minFee is applied and less than max
+                      details.maxFeeApplied = false;
                   }
              } else {
                  details.minFeeApplied = false; 
@@ -642,7 +631,7 @@ contract T3Token is Initializable, ERC20PausableUpgradeable, AccessControlUpgrad
              details.minFeeApplied = false; 
         }
         
-        details.feeBeforeCreditsAndBounds = feeAfterRiskCalc; // Store the fee before any bounds were applied for informational purposes
+        details.feeBeforeCreditsAndBounds = feeAfterRiskCalc; 
 
         IncentiveCredits storage credits = incentiveCredits[sender];
         details.availableCredits = credits.amount;
@@ -658,7 +647,7 @@ contract T3Token is Initializable, ERC20PausableUpgradeable, AccessControlUpgrad
              details.creditsToApply = details.availableCredits;
              feeRemainingAfterCredits = details.totalFeeAssessed - details.availableCredits;
         }
-        details.feeAfterCredits = feeRemainingAfterCredits; // This is what would be paid from balance/prefund if credits were used
+        details.feeAfterCredits = feeRemainingAfterCredits; 
         
         details.netAmountToSendToRecipient = amountIntendedForRecipient; 
 
@@ -750,13 +739,24 @@ contract T3Token is Initializable, ERC20PausableUpgradeable, AccessControlUpgrad
         _unpause(); 
     }
 
+    // --- Access Control Functions ---
+
     function supportsInterface(bytes4 interfaceId)
         public
         view
         virtual
-        override(AccessControlUpgradeable) 
+        override(AccessControlUpgradeable)
         returns (bool)
     {
+        // ERC165 (0x01ffc9a7), AccessControl (0x7965db0b), ERC20 (0x36372b07)
+        if (
+            interfaceId == 0x01ffc9a7 || // ERC165
+            interfaceId == 0x7965db0b || // IAccessControl
+            interfaceId == 0x36372b07    // IERC20
+        ) {
+            return true;
+        }
         return super.supportsInterface(interfaceId);
     }
+
 }

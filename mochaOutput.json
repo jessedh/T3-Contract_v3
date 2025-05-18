@@ -1,8 +1,8 @@
 {
  "stats": {
-  "suites": 7,
-  "tests": 34,
-  "passes": 34,
+  "suites": 9,
+  "tests": 52,
+  "passes": 52,
   "pending": 0,
   "failures": 0
  },
@@ -17,6 +17,20 @@
   {
    "title": "Should allow admin to grant and revoke CUSTODIAN_ROLE",
    "fullTitle": "T3 System: CustodianRegistry and T3Token CustodianRegistry Deployment and Initialization Should allow admin to grant and revoke CUSTODIAN_ROLE",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should support expected interfaces (ERC165, AccessControl)",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token CustodianRegistry Deployment and Initialization Should support expected interfaces (ERC165, AccessControl)",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Initialize: Should revert if initialAdmin is zero address",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token CustodianRegistry Deployment and Initialization Initialize: Should revert if initialAdmin is zero address",
    "file": "test\\T3System.test.js",
    "currentRetry": 0,
    "err": {}
@@ -57,6 +71,20 @@
    "err": {}
   },
   {
+   "title": "registerCustodiedWallet: Should revert for zero user address",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token CustodianRegistry Functionality registerCustodiedWallet: Should revert for zero user address",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "registerCustodiedWallet: Should revert if KYC expiry is before validation",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token CustodianRegistry Functionality registerCustodiedWallet: Should revert if KYC expiry is before validation",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
    "title": "Should set the correct token name and symbol",
    "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Deployment and Initialization Should set the correct token name and symbol",
    "file": "test\\T3System.test.js",
@@ -87,6 +115,90 @@
   {
    "title": "Should set HalfLife parameters correctly",
    "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Deployment and Initialization Should set HalfLife parameters correctly",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should support expected interfaces (ERC165, ERC20, AccessControl)",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Deployment and Initialization Should support expected interfaces (ERC165, ERC20, AccessControl)",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Initialize: Should revert if treasury address is zero",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Deployment and Initialization Initialize: Should revert if treasury address is zero",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Initialize: Should revert with invalid HalfLife parameters",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Deployment and Initialization Initialize: Should revert with invalid HalfLife parameters",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "setHalfLifeDuration: should update and respect bounds",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Admin Functions (Setters) setHalfLifeDuration: should update and respect bounds",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "setMinHalfLifeDuration: should update and adjust current duration if needed",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Admin Functions (Setters) setMinHalfLifeDuration: should update and adjust current duration if needed",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "setMaxHalfLifeDuration: should update and adjust current duration if needed",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Admin Functions (Setters) setMaxHalfLifeDuration: should update and adjust current duration if needed",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "setInactivityResetPeriod: should update and reject zero",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Admin Functions (Setters) setInactivityResetPeriod: should update and reject zero",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "flagAbnormalTransaction: should increment count and affect risk score",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Admin Functions (Setters) flagAbnormalTransaction: should increment count and affect risk score",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "setTreasuryAddress: should revert if setting to zero address",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Admin Functions (Setters) setTreasuryAddress: should revert if setting to zero address",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow admin to record and clear interbank liability",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Interbank Liability Should allow admin to record and clear interbank liability",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should prevent non-admin from recording/clearing liability",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Interbank Liability Should prevent non-admin from recording/clearing liability",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should revert recording/clearing liability with invalid parameters",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Interbank Liability Should revert recording/clearing liability with invalid parameters",
    "file": "test\\T3System.test.js",
    "currentRetry": 0,
    "err": {}
@@ -169,6 +281,13 @@
    "err": {}
   },
   {
+   "title": "prefundFees: Should revert if pre-funding zero amount",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) prefundFees: Should revert if pre-funding zero amount",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
    "title": "Should allow a user to withdraw pre-funded fees",
    "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) Should allow a user to withdraw pre-funded fees",
    "file": "test\\T3System.test.js",
@@ -178,6 +297,13 @@
   {
    "title": "Should revert if withdrawing more pre-funded fees than available",
    "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) Should revert if withdrawing more pre-funded fees than available",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "withdrawPrefundedFees: Should revert if withdrawing zero amount",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) withdrawPrefundedFees: Should revert if withdrawing zero amount",
    "file": "test\\T3System.test.js",
    "currentRetry": 0,
    "err": {}
@@ -263,6 +389,20 @@
    "err": {}
   },
   {
+   "title": "Should support expected interfaces (ERC165, AccessControl)",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token CustodianRegistry Deployment and Initialization Should support expected interfaces (ERC165, AccessControl)",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Initialize: Should revert if initialAdmin is zero address",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token CustodianRegistry Deployment and Initialization Initialize: Should revert if initialAdmin is zero address",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
    "title": "Should allow a custodian to register and unregister a wallet",
    "fullTitle": "T3 System: CustodianRegistry and T3Token CustodianRegistry Functionality Should allow a custodian to register and unregister a wallet",
    "file": "test\\T3System.test.js",
@@ -298,6 +438,20 @@
    "err": {}
   },
   {
+   "title": "registerCustodiedWallet: Should revert for zero user address",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token CustodianRegistry Functionality registerCustodiedWallet: Should revert for zero user address",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "registerCustodiedWallet: Should revert if KYC expiry is before validation",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token CustodianRegistry Functionality registerCustodiedWallet: Should revert if KYC expiry is before validation",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
    "title": "Should set the correct token name and symbol",
    "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Deployment and Initialization Should set the correct token name and symbol",
    "file": "test\\T3System.test.js",
@@ -328,6 +482,90 @@
   {
    "title": "Should set HalfLife parameters correctly",
    "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Deployment and Initialization Should set HalfLife parameters correctly",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should support expected interfaces (ERC165, ERC20, AccessControl)",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Deployment and Initialization Should support expected interfaces (ERC165, ERC20, AccessControl)",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Initialize: Should revert if treasury address is zero",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Deployment and Initialization Initialize: Should revert if treasury address is zero",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Initialize: Should revert with invalid HalfLife parameters",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Deployment and Initialization Initialize: Should revert with invalid HalfLife parameters",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "setHalfLifeDuration: should update and respect bounds",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Admin Functions (Setters) setHalfLifeDuration: should update and respect bounds",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "setMinHalfLifeDuration: should update and adjust current duration if needed",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Admin Functions (Setters) setMinHalfLifeDuration: should update and adjust current duration if needed",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "setMaxHalfLifeDuration: should update and adjust current duration if needed",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Admin Functions (Setters) setMaxHalfLifeDuration: should update and adjust current duration if needed",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "setInactivityResetPeriod: should update and reject zero",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Admin Functions (Setters) setInactivityResetPeriod: should update and reject zero",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "flagAbnormalTransaction: should increment count and affect risk score",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Admin Functions (Setters) flagAbnormalTransaction: should increment count and affect risk score",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "setTreasuryAddress: should revert if setting to zero address",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Admin Functions (Setters) setTreasuryAddress: should revert if setting to zero address",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should allow admin to record and clear interbank liability",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Interbank Liability Should allow admin to record and clear interbank liability",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should prevent non-admin from recording/clearing liability",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Interbank Liability Should prevent non-admin from recording/clearing liability",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "Should revert recording/clearing liability with invalid parameters",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Interbank Liability Should revert recording/clearing liability with invalid parameters",
    "file": "test\\T3System.test.js",
    "currentRetry": 0,
    "err": {}
@@ -410,6 +648,13 @@
    "err": {}
   },
   {
+   "title": "prefundFees: Should revert if pre-funding zero amount",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) prefundFees: Should revert if pre-funding zero amount",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
    "title": "Should allow a user to withdraw pre-funded fees",
    "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) Should allow a user to withdraw pre-funded fees",
    "file": "test\\T3System.test.js",
@@ -419,6 +664,13 @@
   {
    "title": "Should revert if withdrawing more pre-funded fees than available",
    "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) Should revert if withdrawing more pre-funded fees than available",
+   "file": "test\\T3System.test.js",
+   "currentRetry": 0,
+   "err": {}
+  },
+  {
+   "title": "withdrawPrefundedFees: Should revert if withdrawing zero amount",
+   "fullTitle": "T3 System: CustodianRegistry and T3Token T3Token Transfer Functionality (Extended with Pre-funding) withdrawPrefundedFees: Should revert if withdrawing zero amount",
    "file": "test\\T3System.test.js",
    "currentRetry": 0,
    "err": {}

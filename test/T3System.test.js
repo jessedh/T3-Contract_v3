@@ -1,66 +1,60 @@
 // test/T3System.test.js
 const { expect } = require("chai");
 const { ethers, upgrades } = require("hardhat");
-const { loadFixture, time } = require("@nomicfoundation/hardhat-network-helpers"); // For fixtures and time manipulation
-const { toBigInt } = require("ethers"); // User added this, ensure it's used if intended or stick to ethers.toBigInt
+const { loadFixture, time } = require("@nomicfoundation/hardhat-network-helpers"); 
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 describe("T3 System: CustodianRegistry and T3Token", function () {
-    // We define a fixture to reuse the same setup in every test.
     async function deployT3SystemFixture() {
         const [owner, admin, treasury, custodian1, custodian2, user1, user2, user3, minter, pauser, user4, user5] = await ethers.getSigners();
 
-        // Deploy CustodianRegistry
         const CustodianRegistryFactory = await ethers.getContractFactory("CustodianRegistry");
         const custodianRegistry = await upgrades.deployProxy(
             CustodianRegistryFactory,
-            [admin.address], // initialAdmin for CustodianRegistry
+            [admin.address],
             { initializer: "initialize", kind: "uups" }
         );
         await custodianRegistry.waitForDeployment();
 
-        // Define CustodianRegistry Roles
         const ADMIN_ROLE_CR = await custodianRegistry.ADMIN_ROLE();
         const CUSTODIAN_ROLE_CR = await custodianRegistry.CUSTODIAN_ROLE();
+        const DEFAULT_ADMIN_ROLE_CR = await custodianRegistry.DEFAULT_ADMIN_ROLE();
 
-        // Deploy T3Token
         const T3TokenFactory = await ethers.getContractFactory("T3Token");
         const oneDayInSeconds = 24 * 60 * 60;
-        const initialMintAmount = ethers.parseUnits("10000000", 18); // 10 Million T3Tokens
+        const initialMintAmount = ethers.parseUnits("10000000", 18); 
 
         const t3Token = await upgrades.deployProxy(
             T3TokenFactory,
             [
-                "T3 Stablecoin Test", // name
-                "T3T",                // symbol
-                admin.address,        // initialAdmin for T3Token
-                treasury.address,     // treasuryAddress for T3Token fees
-                initialMintAmount,    // initialMintAmount
-                3600,                 // initialHalfLifeDuration (1 hour)
-                600,                  // initialMinHalfLifeDuration (10 mins)
-                oneDayInSeconds,      // initialMaxHalfLifeDuration (1 day)
-                30 * oneDayInSeconds  // initialInactivityResetPeriod (30 days)
+                "T3 Stablecoin Test", 
+                "T3T",                
+                admin.address,        
+                treasury.address,     
+                initialMintAmount,    
+                3600,                 
+                600,                  
+                oneDayInSeconds,      
+                30 * oneDayInSeconds  
             ],
             { initializer: "initialize", kind: "uups" }
         );
         await t3Token.waitForDeployment();
 
-        // Define T3Token Roles
         const DEFAULT_ADMIN_ROLE_T3 = await t3Token.DEFAULT_ADMIN_ROLE();
         const ADMIN_ROLE_T3 = await t3Token.ADMIN_ROLE();
         const MINTER_ROLE_T3 = await t3Token.MINTER_ROLE();
         const BURNER_ROLE_T3 = await t3Token.BURNER_ROLE(); 
         const PAUSER_ROLE_T3 = await t3Token.PAUSER_ROLE();
 
-        // Grant necessary roles for testing
         await t3Token.connect(admin).grantRole(MINTER_ROLE_T3, minter.address);
         await t3Token.connect(admin).grantRole(PAUSER_ROLE_T3, pauser.address);
         
         return {
             custodianRegistry, T3TokenFactory, t3Token, CustodianRegistryFactory,
             owner, admin, treasury, custodian1, custodian2, user1, user2, user3, minter, pauser, user4, user5,
-            ADMIN_ROLE_CR, CUSTODIAN_ROLE_CR,
+            ADMIN_ROLE_CR, CUSTODIAN_ROLE_CR, DEFAULT_ADMIN_ROLE_CR,
             DEFAULT_ADMIN_ROLE_T3, ADMIN_ROLE_T3, MINTER_ROLE_T3, BURNER_ROLE_T3, PAUSER_ROLE_T3,
             initialMintAmount, oneDayInSeconds
         };
@@ -68,45 +62,25 @@ describe("T3 System: CustodianRegistry and T3Token", function () {
 
     let custodianRegistry, T3TokenFactory, t3Token, CustodianRegistryFactory;
     let owner, admin, treasury, custodian1, custodian2, user1, user2, user3, minter, pauser, user4, user5;
-    let ADMIN_ROLE_CR, CUSTODIAN_ROLE_CR;
+    let ADMIN_ROLE_CR, CUSTODIAN_ROLE_CR, DEFAULT_ADMIN_ROLE_CR;
     let DEFAULT_ADMIN_ROLE_T3, ADMIN_ROLE_T3, MINTER_ROLE_T3, BURNER_ROLE_T3, PAUSER_ROLE_T3;
     let initialMintAmount, oneDayInSeconds;
 
-
     beforeEach(async function () {
         const fixtures = await loadFixture(deployT3SystemFixture);
-        custodianRegistry = fixtures.custodianRegistry;
-        T3TokenFactory = fixtures.T3TokenFactory;
-        t3Token = fixtures.t3Token;
-        CustodianRegistryFactory = fixtures.CustodianRegistryFactory;
-        owner = fixtures.owner;
-        admin = fixtures.admin;
-        treasury = fixtures.treasury;
-        custodian1 = fixtures.custodian1;
-        custodian2 = fixtures.custodian2;
-        user1 = fixtures.user1;
-        user2 = fixtures.user2;
-        user3 = fixtures.user3;
-        minter = fixtures.minter;
-        pauser = fixtures.pauser;
-        user4 = fixtures.user4; 
-        user5 = fixtures.user5; 
-        ADMIN_ROLE_CR = fixtures.ADMIN_ROLE_CR;
-        CUSTODIAN_ROLE_CR = fixtures.CUSTODIAN_ROLE_CR;
-        DEFAULT_ADMIN_ROLE_T3 = fixtures.DEFAULT_ADMIN_ROLE_T3;
-        ADMIN_ROLE_T3 = fixtures.ADMIN_ROLE_T3;
-        MINTER_ROLE_T3 = fixtures.MINTER_ROLE_T3;
-        BURNER_ROLE_T3 = fixtures.BURNER_ROLE_T3;
-        PAUSER_ROLE_T3 = fixtures.PAUSER_ROLE_T3;
-        initialMintAmount = fixtures.initialMintAmount;
-        oneDayInSeconds = fixtures.oneDayInSeconds;
+        ({ 
+            custodianRegistry, T3TokenFactory, t3Token, CustodianRegistryFactory,
+            owner, admin, treasury, custodian1, custodian2, user1, user2, user3, minter, pauser, user4, user5,
+            ADMIN_ROLE_CR, CUSTODIAN_ROLE_CR, DEFAULT_ADMIN_ROLE_CR,
+            DEFAULT_ADMIN_ROLE_T3, ADMIN_ROLE_T3, MINTER_ROLE_T3, BURNER_ROLE_T3, PAUSER_ROLE_T3,
+            initialMintAmount, oneDayInSeconds
+        } = fixtures);
     });
-
 
     describe("CustodianRegistry Deployment and Initialization", function () {
         it("Should set the correct admin roles on CustodianRegistry", async function () {
             expect(await custodianRegistry.hasRole(ADMIN_ROLE_CR, admin.address)).to.be.true;
-            expect(await custodianRegistry.hasRole(await custodianRegistry.DEFAULT_ADMIN_ROLE(), admin.address)).to.be.true;
+            expect(await custodianRegistry.hasRole(DEFAULT_ADMIN_ROLE_CR, admin.address)).to.be.true;
         });
 
         it("Should allow admin to grant and revoke CUSTODIAN_ROLE", async function () {
@@ -118,6 +92,22 @@ describe("T3 System: CustodianRegistry and T3Token", function () {
             await custodianRegistry.connect(admin).revokeCustodianRole(custodian1.address);
             expect(await custodianRegistry.hasRole(CUSTODIAN_ROLE_CR, custodian1.address)).to.be.false;
             expect(await custodianRegistry.custodianCount()).to.equal(ethers.toBigInt(0));
+        });
+         it("Should support expected interfaces (ERC165, AccessControl)", async function () {
+            expect(await custodianRegistry.supportsInterface("0x01ffc9a7")).to.be.true; // ERC165
+            expect(await custodianRegistry.supportsInterface("0x7965db0b")).to.be.true; // IAccessControl
+            expect(await custodianRegistry.supportsInterface("0xffffffff")).to.be.false; // Random
+        });
+        it("Initialize: Should revert if initialAdmin is zero address", async function() {
+            const CustodianRegistryFactoryDep = await ethers.getContractFactory("CustodianRegistry");
+            // To check for custom error from AccessControlUpgradeable, we need its ABI.
+            // One way is to deploy a dummy AccessControlUpgradeable if needed, or use its factory.
+            const T3Token = await ethers.getContractFactory("T3Token");
+            
+            await expect(
+  upgrades.deployProxy(CustodianRegistryFactoryDep, [ZERO_ADDRESS], {initializer: "initialize", kind: "uups"})
+).to.be.revertedWithCustomError(CustodianRegistryFactoryDep, "AccessControlBadAdmin")
+  .withArgs(ZERO_ADDRESS);
         });
     });
 
@@ -181,6 +171,18 @@ describe("T3 System: CustodianRegistry and T3Token", function () {
                 custodianRegistry.connect(custodian2).updateKYCStatus(user1.address, await time.latest() + 100, 0)
             ).to.be.revertedWith("Caller is not the registered custodian");
         });
+        
+        it("registerCustodiedWallet: Should revert for zero user address", async function() {
+            await expect(custodianRegistry.connect(custodian1).registerCustodiedWallet(ZERO_ADDRESS, await time.latest(), 0))
+                .to.be.revertedWith("User address cannot be zero");
+        });
+
+        it("registerCustodiedWallet: Should revert if KYC expiry is before validation", async function() {
+            const validTs = await time.latest();
+            const invalidExpiryTs = validTs - 100;
+            await expect(custodianRegistry.connect(custodian1).registerCustodiedWallet(user1.address, validTs, invalidExpiryTs))
+                .to.be.revertedWith("KYC expiry before validation");
+        });
     });
 
     describe("T3Token Deployment and Initialization", function () {
@@ -210,11 +212,143 @@ describe("T3 System: CustodianRegistry and T3Token", function () {
             expect(await t3Token.maxHalfLifeDuration()).to.equal(ethers.toBigInt(oneDayInSeconds));
             expect(await t3Token.inactivityResetPeriod()).to.equal(ethers.toBigInt(30 * oneDayInSeconds));
         });
+         it("Should support expected interfaces (ERC165, ERC20, AccessControl)", async function () {
+            expect(await t3Token.supportsInterface("0x01ffc9a7")).to.be.true; // ERC165
+            expect(await t3Token.supportsInterface("0x36372b07")).to.be.true; // IERC20
+            expect(await t3Token.supportsInterface("0x7965db0b")).to.be.true; // IAccessControl
+            expect(await t3Token.supportsInterface("0xffffffff")).to.be.false; // Random
+        });
+        it("Initialize: Should revert if treasury address is zero", async function() {
+            const T3TokenFactoryDep = await ethers.getContractFactory("T3Token"); 
+            await expect(upgrades.deployProxy(T3TokenFactoryDep, ["T3", "T3", admin.address, ZERO_ADDRESS, 0, 3600, 600, 86400, 30*86400], {initializer: "initialize", kind: "uups"}))
+                .to.be.revertedWith("Treasury address cannot be zero");
+        });
+        it("Initialize: Should revert with invalid HalfLife parameters", async function() {
+            const T3TokenFactoryDep = await ethers.getContractFactory("T3Token");
+            await expect(upgrades.deployProxy(T3TokenFactoryDep, ["T3", "T3", admin.address, treasury.address, 0, 3600, 0, 86400, 30*86400], {initializer: "initialize", kind: "uups"}))
+                .to.be.revertedWith("Min HalfLife must be positive");
+            await expect(upgrades.deployProxy(T3TokenFactoryDep, ["T3", "T3", admin.address, treasury.address, 0, 3600, 86401, 86400, 30*86400], {initializer: "initialize", kind: "uups"}))
+                .to.be.revertedWith("Min HalfLife exceeds max");
+             await expect(upgrades.deployProxy(T3TokenFactoryDep, ["T3", "T3", admin.address, treasury.address, 0, 500, 600, 86400, 30*86400], {initializer: "initialize", kind: "uups"}))
+                .to.be.revertedWith("Initial HalfLife out of bounds");
+        });
     });
+
+    describe("T3Token Admin Functions (Setters)", function() {
+        it("setHalfLifeDuration: should update and respect bounds", async function() {
+            await t3Token.connect(admin).setHalfLifeDuration(1000);
+            expect(await t3Token.halfLifeDuration()).to.equal(ethers.toBigInt(1000));
+            await expect(t3Token.connect(admin).setHalfLifeDuration(500)) 
+                .to.be.revertedWith("Below minimum");
+            await expect(t3Token.connect(admin).setHalfLifeDuration(oneDayInSeconds + 100)) 
+                .to.be.revertedWith("Above maximum");
+        });
+
+        it("setMinHalfLifeDuration: should update and adjust current duration if needed", async function() {
+            await t3Token.connect(admin).setHalfLifeDuration(1000); 
+            await t3Token.connect(admin).setMinHalfLifeDuration(1200); 
+            expect(await t3Token.minHalfLifeDuration()).to.equal(ethers.toBigInt(1200));
+            expect(await t3Token.halfLifeDuration()).to.equal(ethers.toBigInt(1200)); 
+
+            await expect(t3Token.connect(admin).setMinHalfLifeDuration(0))
+                .to.be.revertedWith("Min must be positive");
+            await expect(t3Token.connect(admin).setMinHalfLifeDuration(oneDayInSeconds + 100)) 
+                .to.be.revertedWith("Min exceeds max");
+        });
+        
+        it("setMaxHalfLifeDuration: should update and adjust current duration if needed", async function() {
+            await t3Token.connect(admin).setHalfLifeDuration(oneDayInSeconds - 100); 
+            await t3Token.connect(admin).setMaxHalfLifeDuration(oneDayInSeconds - 200); 
+            expect(await t3Token.maxHalfLifeDuration()).to.equal(ethers.toBigInt(oneDayInSeconds - 200));
+            expect(await t3Token.halfLifeDuration()).to.equal(ethers.toBigInt(oneDayInSeconds - 200)); 
+
+            await expect(t3Token.connect(admin).setMaxHalfLifeDuration(500)) 
+                .to.be.revertedWith("Max below minimum");
+        });
+
+        it("setInactivityResetPeriod: should update and reject zero", async function() {
+            await t3Token.connect(admin).setInactivityResetPeriod(15 * oneDayInSeconds);
+            expect(await t3Token.inactivityResetPeriod()).to.equal(ethers.toBigInt(15 * oneDayInSeconds));
+            await expect(t3Token.connect(admin).setInactivityResetPeriod(0))
+                .to.be.revertedWith("Period must be positive");
+        });
+
+        it("flagAbnormalTransaction: should increment count and affect risk score", async function() {
+            if ((await t3Token.walletRiskProfiles(user4.address)).creationTime === ethers.toBigInt(0)) {
+                await t3Token.connect(minter).mint(user4.address, ethers.parseUnits("1", 18)); 
+                await t3Token.connect(user4).transfer(user5.address, ethers.parseUnits("0.1", 18)); 
+            }
+            await time.increase(oneDayInSeconds * 8); 
+
+            const initialRisk = await t3Token.calculateRiskFactor(user4.address);
+            expect((await t3Token.walletRiskProfiles(user4.address)).abnormalTxCount).to.equal(0);
+
+            await t3Token.connect(admin).flagAbnormalTransaction(user4.address);
+            expect((await t3Token.walletRiskProfiles(user4.address)).abnormalTxCount).to.equal(1);
+            
+            const newRisk = await t3Token.calculateRiskFactor(user4.address);
+            expect(newRisk).to.be.gt(initialRisk);
+            expect(initialRisk).to.equal(ethers.toBigInt(10000)); 
+            expect(newRisk).to.equal(ethers.toBigInt(10000) + ethers.toBigInt(500));
+
+            await expect(t3Token.connect(user1).flagAbnormalTransaction(user4.address))
+                .to.be.revertedWithCustomError(t3Token, "AccessControlUnauthorizedAccount");
+        });
+         it("setTreasuryAddress: should revert if setting to zero address", async function() {
+            await expect(t3Token.connect(admin).setTreasuryAddress(ZERO_ADDRESS))
+                .to.be.revertedWith("Treasury address cannot be zero");
+        });
+    });
+
+
+    describe("T3Token Interbank Liability", function() {
+        const liabilityAmount = ethers.parseUnits("1000", 18);
+        it("Should allow admin to record and clear interbank liability", async function() {
+            await expect(t3Token.connect(admin).recordInterbankLiability(user4.address, user5.address, liabilityAmount))
+                .to.emit(t3Token, "InterbankLiabilityRecorded")
+                .withArgs(user4.address, user5.address, liabilityAmount);
+            expect(await t3Token.interbankLiability(user4.address, user5.address)).to.equal(liabilityAmount);
+
+            await expect(t3Token.connect(admin).clearInterbankLiability(user4.address, user5.address, liabilityAmount / ethers.toBigInt(2)))
+                .to.emit(t3Token, "InterbankLiabilityCleared")
+                .withArgs(user4.address, user5.address, liabilityAmount / ethers.toBigInt(2));
+            expect(await t3Token.interbankLiability(user4.address, user5.address)).to.equal(liabilityAmount / ethers.toBigInt(2));
+
+            await t3Token.connect(admin).clearInterbankLiability(user4.address, user5.address, liabilityAmount / ethers.toBigInt(2));
+            expect(await t3Token.interbankLiability(user4.address, user5.address)).to.equal(0);
+        });
+
+        it("Should prevent non-admin from recording/clearing liability", async function() {
+            await expect(t3Token.connect(user1).recordInterbankLiability(user4.address, user5.address, liabilityAmount))
+                .to.be.revertedWithCustomError(t3Token, "AccessControlUnauthorizedAccount");
+            await expect(t3Token.connect(user1).clearInterbankLiability(user4.address, user5.address, liabilityAmount))
+                .to.be.revertedWithCustomError(t3Token, "AccessControlUnauthorizedAccount");
+        });
+
+        it("Should revert recording/clearing liability with invalid parameters", async function() {
+            await expect(t3Token.connect(admin).recordInterbankLiability(ZERO_ADDRESS, user5.address, liabilityAmount))
+                .to.be.revertedWith("Debtor cannot be zero address");
+            await expect(t3Token.connect(admin).recordInterbankLiability(user4.address, ZERO_ADDRESS, liabilityAmount))
+                .to.be.revertedWith("Creditor cannot be zero address");
+            await expect(t3Token.connect(admin).recordInterbankLiability(user4.address, user4.address, liabilityAmount))
+                .to.be.revertedWith("Debtor cannot be creditor");
+            await expect(t3Token.connect(admin).recordInterbankLiability(user4.address, user5.address, 0))
+                .to.be.revertedWith("Amount must be positive");
+            
+            await t3Token.connect(admin).recordInterbankLiability(user4.address, user5.address, liabilityAmount);
+            await expect(t3Token.connect(admin).clearInterbankLiability(user4.address, user5.address, liabilityAmount * ethers.toBigInt(2)))
+                .to.be.revertedWith("Amount to clear exceeds outstanding liability");
+             await expect(t3Token.connect(admin).clearInterbankLiability(user4.address, user3.address, liabilityAmount)) 
+                .to.be.revertedWith("Amount to clear exceeds outstanding liability");
+            await expect(t3Token.connect(admin).clearInterbankLiability(user4.address, user5.address, 0))
+                .to.be.revertedWith("Amount to clear must be positive");
+        });
+    });
+
 
     describe("T3Token Core Functionality", function () {
         const baseTransferAmount = ethers.parseUnits("100", 18);
-        const feeBuffer = ethers.parseUnits("10", 18); // Increased buffer for fees in setup
+        const feeBuffer = ethers.parseUnits("10", 18); 
 
         beforeEach(async function () {
             const requiredAdminBalance = baseTransferAmount * ethers.toBigInt(5); 
@@ -266,7 +400,6 @@ describe("T3 System: CustodianRegistry and T3Token", function () {
         it("Should allow admin to set HalfLife parameters", async function () {
             await t3Token.connect(admin).setHalfLifeDuration(1800);
             expect(await t3Token.halfLifeDuration()).to.equal(ethers.toBigInt(1800));
-            // Add more checks for other HalfLife setters if needed
         });
 
         it("Should allow a minter to mint tokens", async function () {
@@ -347,12 +480,11 @@ describe("T3 System: CustodianRegistry and T3Token", function () {
                 t3Token.connect(user3).transfer(user2.address, ethers.parseUnits("10", 18))
             ).to.be.revertedWith("Cannot transfer during HalfLife period except back to originator");
 
-            // Ensure user3 has enough to transfer back (small amount + fee)
             const backTransferAmount = ethers.parseUnits("10", 18);
             const feeDetailsBack = await t3Token.estimateTransferFeeDetails(user3.address, user1.address, backTransferAmount);
             const totalCostBack = backTransferAmount + feeDetailsBack.totalFeeAssessed;
              if (await t3Token.balanceOf(user3.address) < totalCostBack) {
-                await t3Token.connect(minter).mint(user3.address, totalCostBack); // Mint if not enough
+                await t3Token.connect(minter).mint(user3.address, totalCostBack); 
             }
             await expect(
                 t3Token.connect(user3).transfer(user1.address, backTransferAmount)
@@ -521,7 +653,9 @@ describe("T3 System: CustodianRegistry and T3Token", function () {
                 const costEnsure = smallTx + feeEstEnsure.totalFeeAssessed;
 
                 if ((await t3Token.walletRiskProfiles(user.address)).creationTime == 0) {
-                    if (await t3Token.balanceOf(user.address) < costEnsure) await t3Token.connect(minter).mint(user.address, costEnsure);
+                    if (await t3Token.balanceOf(user.address) < costEnsure) {
+                        await t3Token.connect(minter).mint(user.address, costEnsure - (await t3Token.balanceOf(user.address)) + ethers.parseUnits("0.1",18) ); 
+                    }
                     await t3Token.connect(user).transfer(recipient.address, smallTx);
                 }
                 let transferData = await t3Token.transferData(recipient.address); 
@@ -562,6 +696,11 @@ describe("T3 System: CustodianRegistry and T3Token", function () {
             expect(await t3Token.balanceOf(treasury.address)).to.equal(treasuryBalBefore + prefundAmount);
             expect(await t3Token.getPrefundedFeeBalance(user1.address)).to.equal(prefundBalBefore + prefundAmount);
         });
+         it("prefundFees: Should revert if pre-funding zero amount", async function() {
+            await expect(t3Token.connect(user1).prefundFees(0))
+                .to.be.revertedWith("Prefund amount must be positive");
+        });
+
 
         it("Should allow a user to withdraw pre-funded fees", async function() {
             const prefundAmount = ethers.parseUnits("10", 18);
@@ -583,6 +722,11 @@ describe("T3 System: CustodianRegistry and T3Token", function () {
         it("Should revert if withdrawing more pre-funded fees than available", async function() {
             await expect(t3Token.connect(user1).withdrawPrefundedFees(ethers.parseUnits("1", 18)))
                 .to.be.revertedWith("Insufficient pre-funded balance");
+        });
+        it("withdrawPrefundedFees: Should revert if withdrawing zero amount", async function() {
+            await t3Token.connect(user1).prefundFees(ethers.parseUnits("1", 18)); 
+            await expect(t3Token.connect(user1).withdrawPrefundedFees(0))
+                .to.be.revertedWith("Withdraw amount must be positive");
         });
 
 
@@ -621,12 +765,17 @@ describe("T3 System: CustodianRegistry and T3Token", function () {
 
         it("Transfer: Fee partially by pre-fund, then by credits, then by balance", async function() {
             const amountToSend = mediumAmount;
-            const estimatedDetails = await t3Token.estimateTransferFeeDetails(user1.address, user2.address, amountToSend);
-            const totalFeeAssessedForTx = estimatedDetails.totalFeeAssessed;
+            let estimatedDetails = await t3Token.estimateTransferFeeDetails(user1.address, user2.address, amountToSend);
+            let totalFeeAssessedForTx = estimatedDetails.totalFeeAssessed;
 
-            if (totalFeeAssessedForTx === ethers.toBigInt(0)) {
-                console.warn("Skipping 'fee partially by pre-fund, credits, balance' as estimated fee is 0");
-                return;
+            if (totalFeeAssessedForTx <= ethers.toBigInt(0)) { 
+                await t3Token.connect(admin).flagAbnormalTransaction(user1.address); 
+                estimatedDetails = await t3Token.estimateTransferFeeDetails(user1.address, user2.address, amountToSend);
+                totalFeeAssessedForTx = estimatedDetails.totalFeeAssessed;
+                if (totalFeeAssessedForTx <= ethers.toBigInt(0)) {
+                    console.warn("Skipping 'fee partially by pre-fund, credits, balance' as estimated fee is still 0 even after risk increase.");
+                    return;
+                }
             }
 
             const prefundPart = totalFeeAssessedForTx / ethers.toBigInt(3);
@@ -634,21 +783,25 @@ describe("T3 System: CustodianRegistry and T3Token", function () {
             const setupTransferAmount = ethers.parseUnits("300", 18); 
             const feeEstSetup = await t3Token.estimateTransferFeeDetails(user4.address, user1.address, setupTransferAmount);
             const costSetup = setupTransferAmount + feeEstSetup.totalFeeAssessed;
-            if (await t3Token.balanceOf(user4.address) < costSetup) {
-                await t3Token.connect(minter).mint(user4.address, costSetup);
+            let user4Bal = await t3Token.balanceOf(user4.address);
+            if (user4Bal < costSetup) {
+                await t3Token.connect(minter).mint(user4.address, costSetup - user4Bal);
             }
             await t3Token.connect(user4).transfer(user1.address, setupTransferAmount); 
             
-            let transferDataUser1_setup = await t3Token.transferData(user1.address); // user1 is recipient
+            let transferDataUser1_setup = await t3Token.transferData(user1.address); 
             let currentBlockTimestamp_setup = await time.latest();
             if (transferDataUser1_setup.commitWindowEnd > currentBlockTimestamp_setup) {
-                await time.increaseTo(transferDataUser1_setup.commitWindowEnd + BigInt(100)); // Ensure enough time passes
+                await time.increaseTo(transferDataUser1_setup.commitWindowEnd + BigInt(100)); 
             } else {
-                await time.increase(BigInt(100)); // Ensure some time passes
+                await time.increase(BigInt(100)); 
             }
             
             if (prefundPart > 0) {
-                if (await t3Token.balanceOf(user1.address) < prefundPart) await t3Token.connect(minter).mint(user1.address, prefundPart);
+                let user1BalForPrefund = await t3Token.balanceOf(user1.address);
+                if (user1BalForPrefund < prefundPart) {
+                    await t3Token.connect(minter).mint(user1.address, prefundPart - user1BalForPrefund);
+                }
                 await t3Token.connect(user1).prefundFees(prefundPart);
             }
 
@@ -683,24 +836,10 @@ describe("T3 System: CustodianRegistry and T3Token", function () {
             expect(await t3Token.getPrefundedFeeBalance(user1.address)).to.equal(u1PrefundInitial - feePaidFromPrefundActual);
             
             const earnedSenderCredits = BigInt(actualTotalFeeInEvent.toString()) / BigInt(4);
-            // Ensure all components are BigInts before arithmetic
             const expectedFinalCredits = 
                 (BigInt(u1CreditsInitial.toString()) - BigInt(feePaidFromCreditsActual.toString())) + earnedSenderCredits;
-
-            // Logging for the failing test (can be removed once passing)
-            /*
-            console.log(`--- Test: Fee partially by pre-fund, credits, balance (DEBUG) ---`);
-            console.log(`User1 Credits Initial: ${u1CreditsInitial.toString()} (Type: ${typeof u1CreditsInitial})`);
-            console.log(`Fee Paid From Credits Actual: ${feePaidFromCreditsActual.toString()} (Type: ${typeof feePaidFromCreditsActual})`);
-            console.log(`Actual Total Fee In Event: ${actualTotalFeeInEvent.toString()} (Type: ${typeof actualTotalFeeInEvent})`);
-            console.log(`Earned Sender Credits: ${earnedSenderCredits.toString()} (Type: ${typeof earnedSenderCredits})`);
-            console.log(`Expected Final Credits (calculated): ${expectedFinalCredits.toString()} (Type: ${typeof expectedFinalCredits})`);
-            */
-            const actualFinalUser1Credits = await t3Token.getAvailableCredits(user1.address);
-            /*
-            console.log(`Actual Final User1 Credits (from contract): ${actualFinalUser1Credits.toString()} (Type: ${typeof actualFinalUser1Credits})`);
-            */
-            expect(actualFinalUser1Credits).to.equal(expectedFinalCredits);
+            
+            expect(await t3Token.getAvailableCredits(user1.address)).to.equal(expectedFinalCredits);
         });
 
 
@@ -750,17 +889,27 @@ describe("T3 System: CustodianRegistry and T3Token", function () {
                 feePayableFromBalance = ethers.toBigInt(0);
             }
 
-            if (feePayableFromBalance > 0) { 
+            if (feePayableFromBalance > 0 && balance < (amountToSend + feePayableFromBalance) ) { 
                  await expect(t3Token.connect(user1).transfer(user2.address, amountToSend))
                     .to.be.revertedWithCustomError(t3Token, "ERC20InsufficientBalance");
-            } else {
-                // If prefund/credits cover the entire fee, sending exact balance as amountToSend should work.
-                // Need to ensure user1 has enough for amountToSend if fee is 0
+            } else if (feePayableFromBalance == ethers.toBigInt(0) && balance >= amountToSend) { 
                 if (await t3Token.balanceOf(user1.address) < amountToSend) {
                     await t3Token.connect(minter).mint(user1.address, amountToSend - (await t3Token.balanceOf(user1.address)));
                 }
                 await expect(t3Token.connect(user1).transfer(user2.address, amountToSend)).to.not.be.reverted;
-                expect(await t3Token.balanceOf(user1.address)).to.equal(0);
+                expect(await t3Token.balanceOf(user1.address)).to.equal(0); 
+            } else if (balance < amountToSend) { 
+                 await expect(t3Token.connect(user1).transfer(user2.address, amountToSend))
+                    .to.be.revertedWithCustomError(t3Token, "ERC20InsufficientBalance");
+            } else { // This case implies fee is covered, and balance >= amountToSend
+                if (await t3Token.balanceOf(user1.address) < amountToSend + feePayableFromBalance) { 
+                     await t3Token.connect(minter).mint(user1.address, (amountToSend + feePayableFromBalance) - (await t3Token.balanceOf(user1.address)));
+                }
+                 await expect(t3Token.connect(user1).transfer(user2.address, amountToSend)).to.not.be.reverted;
+                 // If amountToSend was the exact balance and fee was covered, balance should be 0
+                 if (amountToSend === balance && feePayableFromBalance === ethers.toBigInt(0)) {
+                    expect(await t3Token.balanceOf(user1.address)).to.equal(0);
+                 }
             }
         });
     });

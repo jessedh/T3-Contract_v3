@@ -52,7 +52,12 @@ contract CustodianRegistry is Initializable, AccessControlUpgradeable, UUPSUpgra
      * This function replaces the constructor for upgradeable contracts.
      * Grants ADMIN_ROLE and DEFAULT_ADMIN_ROLE to the initialAdmin.
      */
+    error AccessControlBadAdmin(address admin);
+
     function initialize(address initialAdmin) public initializer {
+        if (initialAdmin == address(0)) {
+            revert AccessControlBadAdmin(initialAdmin);
+        }
         __AccessControl_init();
         __UUPSUpgradeable_init();
 
