@@ -1175,8 +1175,8 @@
       ]
     },
     "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\contracts\\T3Token.sol": {
-      "lastModificationDate": 1747605695006,
-      "contentHash": "b2df227671507a9e1a361d35b9685ac3",
+      "lastModificationDate": 1747606575608,
+      "contentHash": "19348d2f3d38335f190f57db63b106bf",
       "sourceName": "contracts/T3Token.sol",
       "solcConfig": {
         "version": "0.8.24",
