@@ -2,6 +2,8 @@ require("@nomicfoundation/hardhat-ethers");
 require("@openzeppelin/hardhat-upgrades"); // For upgradeable contracts
 require("dotenv").config(); // To load .env variables
 require("@nomicfoundation/hardhat-chai-matchers");
+//added for coverage reports
+require('solidity-coverage');
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {

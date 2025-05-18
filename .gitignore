@@ -162,3 +162,4 @@ cython_debug/
 /artifacts
 /tests_old.ignore
 /.openzeppelin
+/artifacts

@@ -2,7 +2,7 @@
 const { expect } = require("chai");
 const { ethers, upgrades } = require("hardhat");
 const { loadFixture, time } = require("@nomicfoundation/hardhat-network-helpers"); // For fixtures and time manipulation
-const { toBigInt } = require("ethers");
+const { toBigInt } = require("ethers"); // User added this, ensure it's used if intended or stick to ethers.toBigInt
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
@@ -214,16 +214,15 @@ describe("T3 System: CustodianRegistry and T3Token", function () {
 
     describe("T3Token Core Functionality", function () {
         const baseTransferAmount = ethers.parseUnits("100", 18);
-        const feeBuffer = ethers.parseUnits("1", 18); // Buffer for fees in setup
+        const feeBuffer = ethers.parseUnits("10", 18); // Increased buffer for fees in setup
 
         beforeEach(async function () {
-            const requiredAdminBalance = baseTransferAmount * ethers.toBigInt(5); // Initial funding for admin
+            const requiredAdminBalance = baseTransferAmount * ethers.toBigInt(5); 
             const currentAdminBalance = await t3Token.balanceOf(admin.address);
             if (currentAdminBalance < requiredAdminBalance) {
                 await t3Token.connect(minter).mint(admin.address, requiredAdminBalance - currentAdminBalance);
             }
 
-            // Admin transfers to user1
             await t3Token.connect(admin).transfer(user1.address, baseTransferAmount);
             let transferDataUser1 = await t3Token.transferData(user1.address);
             let currentBlockTimestamp = await time.latest();
@@ -231,10 +230,8 @@ describe("T3 System: CustodianRegistry and T3Token", function () {
                 await time.increaseTo(transferDataUser1.commitWindowEnd + BigInt(1));
             }
 
-            // User1 transfers to user2
             const smallTransfer = ethers.parseUnits("1", 18);
             let currentUser1Balance = await t3Token.balanceOf(user1.address);
-            // Estimate fee for user1's transfer to user2
             const feeEst1 = await t3Token.estimateTransferFeeDetails(user1.address, user2.address, smallTransfer);
             const totalCost1 = smallTransfer + feeEst1.totalFeeAssessed;
             if (currentUser1Balance < totalCost1) { 
@@ -247,7 +244,6 @@ describe("T3 System: CustodianRegistry and T3Token", function () {
                 await time.increaseTo(transferDataUser2.commitWindowEnd + BigInt(1));
             }
             
-            // User2 transfers back to user1
             let currentUser2Balance = await t3Token.balanceOf(user2.address);
             const feeEst2 = await t3Token.estimateTransferFeeDetails(user2.address, user1.address, smallTransfer);
             const totalCost2 = smallTransfer + feeEst2.totalFeeAssessed;
@@ -255,7 +251,7 @@ describe("T3 System: CustodianRegistry and T3Token", function () {
                  await t3Token.connect(minter).mint(user2.address, totalCost2 - currentUser2Balance + feeBuffer);
             }
             await t3Token.connect(user2).transfer(user1.address, smallTransfer);
-            transferDataUser1 = await t3Token.transferData(user1.address); // user1 is recipient
+            transferDataUser1 = await t3Token.transferData(user1.address); 
             currentBlockTimestamp = await time.latest();
             if (transferDataUser1.commitWindowEnd > currentBlockTimestamp) {
                 await time.increaseTo(transferDataUser1.commitWindowEnd + BigInt(1));
@@ -270,6 +266,7 @@ describe("T3 System: CustodianRegistry and T3Token", function () {
         it("Should allow admin to set HalfLife parameters", async function () {
             await t3Token.connect(admin).setHalfLifeDuration(1800);
             expect(await t3Token.halfLifeDuration()).to.equal(ethers.toBigInt(1800));
+            // Add more checks for other HalfLife setters if needed
         });
 
         it("Should allow a minter to mint tokens", async function () {
@@ -350,8 +347,15 @@ describe("T3 System: CustodianRegistry and T3Token", function () {
                 t3Token.connect(user3).transfer(user2.address, ethers.parseUnits("10", 18))
             ).to.be.revertedWith("Cannot transfer during HalfLife period except back to originator");
 
+            // Ensure user3 has enough to transfer back (small amount + fee)
+            const backTransferAmount = ethers.parseUnits("10", 18);
+            const feeDetailsBack = await t3Token.estimateTransferFeeDetails(user3.address, user1.address, backTransferAmount);
+            const totalCostBack = backTransferAmount + feeDetailsBack.totalFeeAssessed;
+             if (await t3Token.balanceOf(user3.address) < totalCostBack) {
+                await t3Token.connect(minter).mint(user3.address, totalCostBack); // Mint if not enough
+            }
             await expect(
-                t3Token.connect(user3).transfer(user1.address, ethers.parseUnits("10", 18))
+                t3Token.connect(user3).transfer(user1.address, backTransferAmount)
             ).to.not.be.reverted;
         });
 
@@ -499,7 +503,7 @@ describe("T3 System: CustodianRegistry and T3Token", function () {
         const smallAmount = ethers.parseUnits("5", 18);
         const mediumAmount = ethers.parseUnits("50", 18);
         const largeAmount = ethers.parseUnits("5000", 18);
-        let initialUser1Balance_ext, initialUser2Balance_ext, initialTreasuryBalance_ext, initialUser1Prefund_ext, initialUser1Credits_ext; // Suffix to avoid clash
+        let initialUser1Balance_ext, initialUser2Balance_ext, initialTreasuryBalance_ext, initialUser1Prefund_ext, initialUser1Credits_ext; 
 
 
         beforeEach(async function() {
@@ -634,17 +638,15 @@ describe("T3 System: CustodianRegistry and T3Token", function () {
                 await t3Token.connect(minter).mint(user4.address, costSetup);
             }
             await t3Token.connect(user4).transfer(user1.address, setupTransferAmount); 
-            //had to use let bc needs to be updated after transfer
-            let currentTime = await time.latest() + 250;
-            currentTime = toBigInt(currentTime);
-            //console.log(`Current Time: ${currentTime} ${typeof currentTime}`);
-            const halfLifeDuration = await t3Token.halfLifeDuration();
-            //console.log(`Half Life Duration: ${halfLifeDuration} ${typeof halfLifeDuration}`);
-            //console.log(`Target Time: ${currentTime + halfLifeDuration}`);
-            const targetTime = currentTime + halfLifeDuration;
-            await time.increaseTo(targetTime);
-
-
+            
+            let transferDataUser1_setup = await t3Token.transferData(user1.address); // user1 is recipient
+            let currentBlockTimestamp_setup = await time.latest();
+            if (transferDataUser1_setup.commitWindowEnd > currentBlockTimestamp_setup) {
+                await time.increaseTo(transferDataUser1_setup.commitWindowEnd + BigInt(100)); // Ensure enough time passes
+            } else {
+                await time.increase(BigInt(100)); // Ensure some time passes
+            }
+            
             if (prefundPart > 0) {
                 if (await t3Token.balanceOf(user1.address) < prefundPart) await t3Token.connect(minter).mint(user1.address, prefundPart);
                 await t3Token.connect(user1).prefundFees(prefundPart);
@@ -680,22 +682,24 @@ describe("T3 System: CustodianRegistry and T3Token", function () {
             expect(await t3Token.balanceOf(treasury.address)).to.equal(treasBal + feePaidFromBalanceActual); 
             expect(await t3Token.getPrefundedFeeBalance(user1.address)).to.equal(u1PrefundInitial - feePaidFromPrefundActual);
             
-            const earnedSenderCredits = BigInt(actualTotalFeeInEvent.toString()) / BigInt(4); // Ensure BigInt division
-            const expectedFinalCredits = (BigInt(u1CreditsInitial.toString()) - BigInt(feePaidFromCreditsActual.toString())) + BigInt(earnedSenderCredits);
+            const earnedSenderCredits = BigInt(actualTotalFeeInEvent.toString()) / BigInt(4);
+            // Ensure all components are BigInts before arithmetic
+            const expectedFinalCredits = 
+                (BigInt(u1CreditsInitial.toString()) - BigInt(feePaidFromCreditsActual.toString())) + earnedSenderCredits;
 
-            // Logging for the failing test
-            /*  
-            console.log(`--- Failing Test Debug ---`);
-            console.log(`User1 Credits Initial (u1CreditsInitial): ${u1CreditsInitial.toString()} (Type: ${typeof u1CreditsInitial})`);
-            console.log(`Fee Paid From Credits Actual (feePaidFromCreditsActual): ${feePaidFromCreditsActual.toString()} (Type: ${typeof feePaidFromCreditsActual})`);
-            console.log(`Actual Total Fee In Event (actualTotalFeeInEvent): ${actualTotalFeeInEvent.toString()} (Type: ${typeof actualTotalFeeInEvent})`);
-            console.log(`Earned Sender Credits (earnedSenderCredits): ${earnedSenderCredits.toString()} (Type: ${typeof earnedSenderCredits})`);
-            console.log(`Expected Final Credits (calculated): ${expectedFinalCredits.toString()} (Type: ${typeof expectedFinalCredits})`); 
+            // Logging for the failing test (can be removed once passing)
+            /*
+            console.log(`--- Test: Fee partially by pre-fund, credits, balance (DEBUG) ---`);
+            console.log(`User1 Credits Initial: ${u1CreditsInitial.toString()} (Type: ${typeof u1CreditsInitial})`);
+            console.log(`Fee Paid From Credits Actual: ${feePaidFromCreditsActual.toString()} (Type: ${typeof feePaidFromCreditsActual})`);
+            console.log(`Actual Total Fee In Event: ${actualTotalFeeInEvent.toString()} (Type: ${typeof actualTotalFeeInEvent})`);
+            console.log(`Earned Sender Credits: ${earnedSenderCredits.toString()} (Type: ${typeof earnedSenderCredits})`);
+            console.log(`Expected Final Credits (calculated): ${expectedFinalCredits.toString()} (Type: ${typeof expectedFinalCredits})`);
             */
             const actualFinalUser1Credits = await t3Token.getAvailableCredits(user1.address);
-            //console.log(`Actual Final User1 Credits (from contract): ${actualFinalUser1Credits.toString()} (Type: ${typeof actualFinalUser1Credits})`);
-
-
+            /*
+            console.log(`Actual Final User1 Credits (from contract): ${actualFinalUser1Credits.toString()} (Type: ${typeof actualFinalUser1Credits})`);
+            */
             expect(actualFinalUser1Credits).to.equal(expectedFinalCredits);
         });
 
@@ -750,6 +754,11 @@ describe("T3 System: CustodianRegistry and T3Token", function () {
                  await expect(t3Token.connect(user1).transfer(user2.address, amountToSend))
                     .to.be.revertedWithCustomError(t3Token, "ERC20InsufficientBalance");
             } else {
+                // If prefund/credits cover the entire fee, sending exact balance as amountToSend should work.
+                // Need to ensure user1 has enough for amountToSend if fee is 0
+                if (await t3Token.balanceOf(user1.address) < amountToSend) {
+                    await t3Token.connect(minter).mint(user1.address, amountToSend - (await t3Token.balanceOf(user1.address)));
+                }
                 await expect(t3Token.connect(user1).transfer(user2.address, amountToSend)).to.not.be.reverted;
                 expect(await t3Token.balanceOf(user1.address)).to.equal(0);
             }
