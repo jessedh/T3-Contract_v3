@@ -4,6 +4,8 @@ require("dotenv").config(); // To load .env variables
 require("@nomicfoundation/hardhat-chai-matchers");
 //added for coverage reports
 require('solidity-coverage');
+//added for gas reports
+require('hardhat-gas-reporter');
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
