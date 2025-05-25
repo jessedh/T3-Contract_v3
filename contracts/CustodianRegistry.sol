@@ -3,7 +3,7 @@ pragma solidity ^0.8.24; // Keeping your pragma
 
 // Using Upgradeable OpenZeppelin Contracts
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
-import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
+import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol"; // Note: This is a non-upgradeable import
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
@@ -35,7 +35,7 @@ contract CustodianRegistry is Initializable, AccessControlUpgradeable, UUPSUpgra
     mapping(address => CustodyData) private _custodyInfo;
 
     // Optional: Keep track of all registered custodians for transparency
-    EnumerableSet.AddressSet private _custodians;
+    EnumerableSet.AddressSet private _custodians; // Tracks addresses that have CUSTODIAN_ROLE
 
     // --- Events ---
     event WalletRegistered(address indexed userAddress, address indexed custodian, uint256 kycValidatedTimestamp, uint256 kycExpiresTimestamp);
@@ -82,13 +82,13 @@ contract CustodianRegistry is Initializable, AccessControlUpgradeable, UUPSUpgra
     function grantCustodianRole(address fiAddress) external onlyRole(ADMIN_ROLE) {
         require(fiAddress != address(0), "Custodian cannot be zero address");
         _grantRole(CUSTODIAN_ROLE, fiAddress);
-        _custodians.add(fiAddress);
+        _custodians.add(fiAddress); // Add to enumerable set for tracking
     }
 
     function revokeCustodianRole(address fiAddress) external onlyRole(ADMIN_ROLE) {
         require(fiAddress != address(0), "Custodian cannot be zero address");
         _revokeRole(CUSTODIAN_ROLE, fiAddress);
-        _custodians.remove(fiAddress);
+        _custodians.remove(fiAddress); // Remove from enumerable set
     }
 
     // --- Custodian Actions ---
@@ -100,6 +100,7 @@ contract CustodianRegistry is Initializable, AccessControlUpgradeable, UUPSUpgra
     ) external onlyRole(CUSTODIAN_ROLE) {
         require(userAddress != address(0), "User address cannot be zero");
         require(kycExpiresTimestamp == 0 || kycExpiresTimestamp >= kycValidatedTimestamp, "KYC expiry before validation");
+        require(_custodyInfo[userAddress].custodian == address(0), "Wallet already registered"); // Prevent re-registration
 
         address custodian = _msgSender();
         _custodyInfo[userAddress] = CustodyData({
@@ -135,6 +136,7 @@ contract CustodianRegistry is Initializable, AccessControlUpgradeable, UUPSUpgra
         CustodyData storage data = _custodyInfo[userAddress];
 
         require(data.custodian == custodian, "Caller is not the registered custodian");
+        require(data.custodian != address(0), "Wallet not registered"); // Ensure it exists before deleting
 
         delete _custodyInfo[userAddress];
         emit WalletUnregistered(userAddress, custodian);
@@ -151,9 +153,23 @@ contract CustodianRegistry is Initializable, AccessControlUpgradeable, UUPSUpgra
         return (data.kycValidatedTimestamp, data.kycExpiresTimestamp);
     }
 
+    /**
+     * @dev Checks if a user's KYC is currently valid.
+     * A wallet is considered approved if its KYC is valid OR if the address itself holds the CUSTODIAN_ROLE.
+     * This function only checks for KYC validity of a client wallet.
+     * For full approval check, T3Token will combine this with hasRole(CUSTODIAN_ROLE).
+     */
     function isKYCValid(address userAddress) external view returns (bool) {
         CustodyData storage data = _custodyInfo[userAddress];
-        return (data.kycValidatedTimestamp > 0 && (data.kycExpiresTimestamp == 0 || data.kycExpiresTimestamp >= block.timestamp));
+        // KYC is valid if:
+        // 1. A custodian is registered for this address AND
+        // 2. KYC validated timestamp is greater than 0 (meaning it was set) AND
+        // 3. KYC has not expired (expiryTimestamp is 0 for no expiry, or >= current block.timestamp)
+        return (
+            data.custodian != address(0) &&
+            data.kycValidatedTimestamp > 0 && 
+            (data.kycExpiresTimestamp == 0 || data.kycExpiresTimestamp >= block.timestamp)
+        );
     }
 
     // --- Optional: Functions for tracking custodians ---
@@ -180,3 +196,4 @@ contract CustodianRegistry is Initializable, AccessControlUpgradeable, UUPSUpgra
         return super.supportsInterface(interfaceId);
     }
 }
+//the end

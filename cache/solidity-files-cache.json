@@ -2,15 +2,19 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\contracts\\CustodianRegistry.sol": {
-      "lastModificationDate": 1747605488888,
-      "contentHash": "b4c6581253533cee8291d29afcb9322b",
+      "lastModificationDate": 1748100414910,
+      "contentHash": "8fe8315bcd252ed693284c78e8da3541",
       "sourceName": "contracts/CustodianRegistry.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
           },
           "evmVersion": "paris",
           "outputSelection": {
@@ -27,9 +31,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -46,98 +47,20 @@
         "CustodianRegistry"
       ]
     },
-    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\utils\\structs\\EnumerableSet.sol": {
-      "lastModificationDate": 1747595161961,
-      "contentHash": "9dea2f1d2615534fb7e64833ae92b7c3",
-      "sourceName": "@openzeppelin/contracts/utils/structs/EnumerableSet.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": false
-          }
-        }
-      },
-      "imports": [
-        "../Arrays.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "EnumerableSet"
-      ]
-    },
-    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol": {
-      "lastModificationDate": 1747605695054,
-      "contentHash": "2acae54ad209714bca07edf4bae32f72",
-      "sourceName": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": false
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "Initializable"
-      ]
-    },
     "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts-upgradeable\\access\\AccessControlUpgradeable.sol": {
-      "lastModificationDate": 1747605695054,
+      "lastModificationDate": 1748099034291,
       "contentHash": "cdbbb56cde3edf99d1426db8d104bb84",
       "sourceName": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
           },
           "evmVersion": "paris",
           "outputSelection": {
@@ -154,9 +77,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -173,16 +93,20 @@
         "AccessControlUpgradeable"
       ]
     },
-    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts-upgradeable\\proxy\\utils\\UUPSUpgradeable.sol": {
-      "lastModificationDate": 1747605695055,
-      "contentHash": "08db0b4bea3d52072346c326c5b857b7",
-      "sourceName": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol",
+    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\utils\\structs\\EnumerableSet.sol": {
+      "lastModificationDate": 1748099034289,
+      "contentHash": "9dea2f1d2615534fb7e64833ae92b7c3",
+      "sourceName": "@openzeppelin/contracts/utils/structs/EnumerableSet.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
           },
           "evmVersion": "paris",
           "outputSelection": {
@@ -199,9 +123,90 @@
                 "ast"
               ]
             }
+          }
+        }
+      },
+      "imports": [
+        "../Arrays.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "EnumerableSet"
+      ]
+    },
+    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol": {
+      "lastModificationDate": 1748099034321,
+      "contentHash": "2acae54ad209714bca07edf4bae32f72",
+      "sourceName": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 150
           },
-          "metadata": {
-            "useLiteralContent": false
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "Initializable"
+      ]
+    },
+    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts-upgradeable\\proxy\\utils\\UUPSUpgradeable.sol": {
+      "lastModificationDate": 1748099034322,
+      "contentHash": "08db0b4bea3d52072346c326c5b857b7",
+      "sourceName": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
           }
         }
       },
@@ -217,16 +222,20 @@
         "UUPSUpgradeable"
       ]
     },
-    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\utils\\Arrays.sol": {
-      "lastModificationDate": 1747595161920,
-      "contentHash": "87b3640dbda6477c44a91647d48ff29c",
-      "sourceName": "@openzeppelin/contracts/utils/Arrays.sol",
+    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol": {
+      "lastModificationDate": 1748099034334,
+      "contentHash": "c28aaa25d083a9a55bd9ec9e0b785122",
+      "sourceName": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
           },
           "evmVersion": "paris",
           "outputSelection": {
@@ -243,9 +252,175 @@
                 "ast"
               ]
             }
+          }
+        }
+      },
+      "imports": [
+        "../proxy/utils/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "ContextUpgradeable"
+      ]
+    },
+    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts-upgradeable\\utils\\introspection\\ERC165Upgradeable.sol": {
+      "lastModificationDate": 1748099034335,
+      "contentHash": "61838d7249e45e3941fc2a45d1091448",
+      "sourceName": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 150
           },
-          "metadata": {
-            "useLiteralContent": false
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/utils/introspection/IERC165.sol",
+        "../../proxy/utils/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "ERC165Upgradeable"
+      ]
+    },
+    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\access\\IAccessControl.sol": {
+      "lastModificationDate": 1748099034169,
+      "contentHash": "80621031deacf7066ec81277f9b1463a",
+      "sourceName": "@openzeppelin/contracts/access/IAccessControl.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IAccessControl"
+      ]
+    },
+    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\utils\\introspection\\IERC165.sol": {
+      "lastModificationDate": 1748099034285,
+      "contentHash": "bf0119eb2a570f219729ff38b6cd1df8",
+      "sourceName": "@openzeppelin/contracts/utils/introspection/IERC165.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IERC165"
+      ]
+    },
+    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\utils\\Arrays.sol": {
+      "lastModificationDate": 1748099034281,
+      "contentHash": "87b3640dbda6477c44a91647d48ff29c",
+      "sourceName": "@openzeppelin/contracts/utils/Arrays.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
           }
         }
       },
@@ -262,56 +437,20 @@
         "Arrays"
       ]
     },
-    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\utils\\SlotDerivation.sol": {
-      "lastModificationDate": 1747595161938,
-      "contentHash": "43950136ee6a1761d2cbed39d16bb1e0",
-      "sourceName": "@openzeppelin/contracts/utils/SlotDerivation.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": false
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "SlotDerivation"
-      ]
-    },
     "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\utils\\Comparators.sol": {
-      "lastModificationDate": 1747595161925,
+      "lastModificationDate": 1748099034282,
       "contentHash": "0e57405a6f979853cbfeb0df3546c3a3",
       "sourceName": "@openzeppelin/contracts/utils/Comparators.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
           },
           "evmVersion": "paris",
           "outputSelection": {
@@ -328,9 +467,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -343,15 +479,19 @@
       ]
     },
     "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\utils\\StorageSlot.sol": {
-      "lastModificationDate": 1747605695108,
+      "lastModificationDate": 1748099034287,
       "contentHash": "e656d64c4ce918f3d13030b91c935134",
       "sourceName": "@openzeppelin/contracts/utils/StorageSlot.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
           },
           "evmVersion": "paris",
           "outputSelection": {
@@ -368,9 +508,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -382,16 +519,20 @@
         "StorageSlot"
       ]
     },
-    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\utils\\math\\Math.sol": {
-      "lastModificationDate": 1747595161952,
-      "contentHash": "5ec781e33d3a9ac91ffdc83d94420412",
-      "sourceName": "@openzeppelin/contracts/utils/math/Math.sol",
+    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\utils\\SlotDerivation.sol": {
+      "lastModificationDate": 1748099034287,
+      "contentHash": "43950136ee6a1761d2cbed39d16bb1e0",
+      "sourceName": "@openzeppelin/contracts/utils/SlotDerivation.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
           },
           "evmVersion": "paris",
           "outputSelection": {
@@ -408,9 +549,47 @@
                 "ast"
               ]
             }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "SlotDerivation"
+      ]
+    },
+    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\utils\\math\\Math.sol": {
+      "lastModificationDate": 1748099034285,
+      "contentHash": "5ec781e33d3a9ac91ffdc83d94420412",
+      "sourceName": "@openzeppelin/contracts/utils/math/Math.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 150
           },
-          "metadata": {
-            "useLiteralContent": false
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
           }
         }
       },
@@ -426,15 +605,19 @@
       ]
     },
     "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\utils\\Panic.sol": {
-      "lastModificationDate": 1747595161931,
+      "lastModificationDate": 1748099034287,
       "contentHash": "2133dc13536b4a6a98131e431fac59e1",
       "sourceName": "@openzeppelin/contracts/utils/Panic.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
           },
           "evmVersion": "paris",
           "outputSelection": {
@@ -451,9 +634,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -466,15 +646,19 @@
       ]
     },
     "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\utils\\math\\SafeCast.sol": {
-      "lastModificationDate": 1747595161953,
+      "lastModificationDate": 1748099034285,
       "contentHash": "2adca1150f58fc6f3d1f0a0f22ee7cca",
       "sourceName": "@openzeppelin/contracts/utils/math/SafeCast.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
           },
           "evmVersion": "paris",
           "outputSelection": {
@@ -491,9 +675,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -505,181 +686,20 @@
         "SafeCast"
       ]
     },
-    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts-upgradeable\\utils\\introspection\\ERC165Upgradeable.sol": {
-      "lastModificationDate": 1747605695055,
-      "contentHash": "61838d7249e45e3941fc2a45d1091448",
-      "sourceName": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": false
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/utils/introspection/IERC165.sol",
-        "../../proxy/utils/Initializable.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "ERC165Upgradeable"
-      ]
-    },
-    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol": {
-      "lastModificationDate": 1747605695075,
-      "contentHash": "c28aaa25d083a9a55bd9ec9e0b785122",
-      "sourceName": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": false
-          }
-        }
-      },
-      "imports": [
-        "../proxy/utils/Initializable.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "ContextUpgradeable"
-      ]
-    },
-    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\access\\IAccessControl.sol": {
-      "lastModificationDate": 1747605695079,
-      "contentHash": "80621031deacf7066ec81277f9b1463a",
-      "sourceName": "@openzeppelin/contracts/access/IAccessControl.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": false
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "IAccessControl"
-      ]
-    },
-    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\utils\\introspection\\IERC165.sol": {
-      "lastModificationDate": 1747605695090,
-      "contentHash": "bf0119eb2a570f219729ff38b6cd1df8",
-      "sourceName": "@openzeppelin/contracts/utils/introspection/IERC165.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": false
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "IERC165"
-      ]
-    },
     "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\interfaces\\draft-IERC1822.sol": {
-      "lastModificationDate": 1747605695089,
+      "lastModificationDate": 1748099034220,
       "contentHash": "64a2b7a96950f0641c477993f3029477",
       "sourceName": "@openzeppelin/contracts/interfaces/draft-IERC1822.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
           },
           "evmVersion": "paris",
           "outputSelection": {
@@ -696,9 +716,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -711,15 +728,19 @@
       ]
     },
     "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\proxy\\ERC1967\\ERC1967Utils.sol": {
-      "lastModificationDate": 1747605695090,
+      "lastModificationDate": 1748099034235,
       "contentHash": "c023a5b23ee35b40b3085e550ff3367f",
       "sourceName": "@openzeppelin/contracts/proxy/ERC1967/ERC1967Utils.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
           },
           "evmVersion": "paris",
           "outputSelection": {
@@ -736,9 +757,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -755,56 +773,20 @@
         "ERC1967Utils"
       ]
     },
-    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\interfaces\\IERC1967.sol": {
-      "lastModificationDate": 1747605695109,
-      "contentHash": "4e17c826a54a8ee1a185449d4695d07d",
-      "sourceName": "@openzeppelin/contracts/interfaces/IERC1967.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": false
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "IERC1967"
-      ]
-    },
     "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\utils\\Address.sol": {
-      "lastModificationDate": 1747605695109,
+      "lastModificationDate": 1748099034281,
       "contentHash": "5b9a49c25d7edbc48ffcbd2c7e8a40ef",
       "sourceName": "@openzeppelin/contracts/utils/Address.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
           },
           "evmVersion": "paris",
           "outputSelection": {
@@ -821,9 +803,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -837,16 +816,20 @@
         "Address"
       ]
     },
-    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\proxy\\beacon\\IBeacon.sol": {
-      "lastModificationDate": 1747605695110,
-      "contentHash": "0a5c323fd908535580597848b8e550fb",
-      "sourceName": "@openzeppelin/contracts/proxy/beacon/IBeacon.sol",
+    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\interfaces\\IERC1967.sol": {
+      "lastModificationDate": 1748099034224,
+      "contentHash": "4e17c826a54a8ee1a185449d4695d07d",
+      "sourceName": "@openzeppelin/contracts/interfaces/IERC1967.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
           },
           "evmVersion": "paris",
           "outputSelection": {
@@ -863,9 +846,47 @@
                 "ast"
               ]
             }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IERC1967"
+      ]
+    },
+    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\proxy\\beacon\\IBeacon.sol": {
+      "lastModificationDate": 1748099034233,
+      "contentHash": "0a5c323fd908535580597848b8e550fb",
+      "sourceName": "@openzeppelin/contracts/proxy/beacon/IBeacon.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 150
           },
-          "metadata": {
-            "useLiteralContent": false
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
           }
         }
       },
@@ -878,15 +899,19 @@
       ]
     },
     "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\utils\\Errors.sol": {
-      "lastModificationDate": 1747605695118,
+      "lastModificationDate": 1748099034284,
       "contentHash": "6b5eac2b85500c3012977849cfd633d8",
       "sourceName": "@openzeppelin/contracts/utils/Errors.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
           },
           "evmVersion": "paris",
           "outputSelection": {
@@ -903,9 +928,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -917,16 +939,20 @@
         "Errors"
       ]
     },
-    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts-upgradeable\\utils\\PausableUpgradeable.sol": {
-      "lastModificationDate": 1747605695078,
-      "contentHash": "a77dad8312dfaddab72fab403ee0c0a6",
-      "sourceName": "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol",
+    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\contracts\\T3Token.sol": {
+      "lastModificationDate": 1748104833864,
+      "contentHash": "61190f8f277d3afda77cca9dcc122f21",
+      "sourceName": "contracts/T3Token.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
           },
           "evmVersion": "paris",
           "outputSelection": {
@@ -943,77 +969,208 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
       "imports": [
-        "../utils/ContextUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20PausableUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol",
+        "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol",
+        "./CustodianRegistry.sol",
+        "./FeeCalculationLibrary.sol",
+        "interfaces/ILockedTransferManager.sol",
+        "interfaces/IInterbankLiabilityLedger.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.24"
+      ],
+      "artifacts": [
+        "T3Token"
+      ]
+    },
+    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\contracts\\FeeCalculationLibrary.sol": {
+      "lastModificationDate": 1748099442236,
+      "contentHash": "2f5ad901c23e9415c077dce8f5d392ab",
+      "sourceName": "contracts/FeeCalculationLibrary.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.24"
+      ],
+      "artifacts": [
+        "FeeCalculationLibrary"
+      ]
+    },
+    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\interfaces\\ILockedTransferManager.sol": {
+      "lastModificationDate": 1748099848789,
+      "contentHash": "39b9aab3d53885a5996ddaf02063ab9c",
+      "sourceName": "interfaces/ILockedTransferManager.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.24"
+      ],
+      "artifacts": [
+        "ILockedTransferManager"
+      ]
+    },
+    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\interfaces\\IInterbankLiabilityLedger.sol": {
+      "lastModificationDate": 1748104983892,
+      "contentHash": "29d9f77a98515c7fcab43c90dd31f064",
+      "sourceName": "interfaces/IInterbankLiabilityLedger.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.24"
+      ],
+      "artifacts": [
+        "IInterbankLiabilityLedger"
+      ]
+    },
+    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts-upgradeable\\utils\\ReentrancyGuardUpgradeable.sol": {
+      "lastModificationDate": 1748099034336,
+      "contentHash": "24562076b21756e3358ede5e844008ce",
+      "sourceName": "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
         "../proxy/utils/Initializable.sol"
       ],
       "versionPragmas": [
         "^0.8.20"
       ],
       "artifacts": [
-        "PausableUpgradeable"
-      ]
-    },
-    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts-upgradeable\\token\\ERC20\\extensions\\ERC20PausableUpgradeable.sol": {
-      "lastModificationDate": 1747605695055,
-      "contentHash": "46d770a6194b5c717774c7ce4287ffd1",
-      "sourceName": "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20PausableUpgradeable.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": false
-          }
-        }
-      },
-      "imports": [
-        "../ERC20Upgradeable.sol",
-        "../../../utils/PausableUpgradeable.sol",
-        "../../../proxy/utils/Initializable.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "ERC20PausableUpgradeable"
+        "ReentrancyGuardUpgradeable"
       ]
     },
     "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts-upgradeable\\token\\ERC20\\ERC20Upgradeable.sol": {
-      "lastModificationDate": 1747605695079,
+      "lastModificationDate": 1748099034327,
       "contentHash": "d98c902f3c91d73bb9f688ad15065ab8",
       "sourceName": "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
           },
           "evmVersion": "paris",
           "outputSelection": {
@@ -1030,9 +1187,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -1050,16 +1204,20 @@
         "ERC20Upgradeable"
       ]
     },
-    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\interfaces\\draft-IERC6093.sol": {
-      "lastModificationDate": 1747605695110,
-      "contentHash": "267d92fe4de67b1bdb3302c08f387dbf",
-      "sourceName": "@openzeppelin/contracts/interfaces/draft-IERC6093.sol",
+    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts-upgradeable\\token\\ERC20\\extensions\\ERC20PausableUpgradeable.sol": {
+      "lastModificationDate": 1748099034328,
+      "contentHash": "46d770a6194b5c717774c7ce4287ffd1",
+      "sourceName": "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20PausableUpgradeable.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
           },
           "evmVersion": "paris",
           "outputSelection": {
@@ -1076,9 +1234,51 @@
                 "ast"
               ]
             }
+          }
+        }
+      },
+      "imports": [
+        "../ERC20Upgradeable.sol",
+        "../../../utils/PausableUpgradeable.sol",
+        "../../../proxy/utils/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "ERC20PausableUpgradeable"
+      ]
+    },
+    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\interfaces\\draft-IERC6093.sol": {
+      "lastModificationDate": 1748099034221,
+      "contentHash": "267d92fe4de67b1bdb3302c08f387dbf",
+      "sourceName": "@openzeppelin/contracts/interfaces/draft-IERC6093.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 150
           },
-          "metadata": {
-            "useLiteralContent": false
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
           }
         }
       },
@@ -1093,15 +1293,19 @@
       ]
     },
     "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol": {
-      "lastModificationDate": 1747605695110,
+      "lastModificationDate": 1748099034271,
       "contentHash": "8f19f64d2adadf448840908bbaf431c8",
       "sourceName": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
           },
           "evmVersion": "paris",
           "outputSelection": {
@@ -1118,9 +1322,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -1133,15 +1334,19 @@
       ]
     },
     "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts\\token\\ERC20\\extensions\\IERC20Metadata.sol": {
-      "lastModificationDate": 1747605695112,
+      "lastModificationDate": 1748099034271,
       "contentHash": "794db3115001aa372c79326fcfd44b1f",
       "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
           },
           "evmVersion": "paris",
           "outputSelection": {
@@ -1158,9 +1363,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -1174,16 +1376,20 @@
         "IERC20Metadata"
       ]
     },
-    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\contracts\\T3Token.sol": {
-      "lastModificationDate": 1747606575608,
-      "contentHash": "19348d2f3d38335f190f57db63b106bf",
-      "sourceName": "contracts/T3Token.sol",
+    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts-upgradeable\\utils\\PausableUpgradeable.sol": {
+      "lastModificationDate": 1748099034336,
+      "contentHash": "a77dad8312dfaddab72fab403ee0c0a6",
+      "sourceName": "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
           },
           "evmVersion": "paris",
           "outputSelection": {
@@ -1200,67 +1406,116 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
       "imports": [
-        "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20PausableUpgradeable.sol",
-        "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
-        "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol",
-        "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol",
-        "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol",
-        "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.24"
-      ],
-      "artifacts": [
-        "T3Token"
-      ]
-    },
-    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\node_modules\\@openzeppelin\\contracts-upgradeable\\utils\\ReentrancyGuardUpgradeable.sol": {
-      "lastModificationDate": 1747605695054,
-      "contentHash": "24562076b21756e3358ede5e844008ce",
-      "sourceName": "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": false
-          }
-        }
-      },
-      "imports": [
+        "../utils/ContextUpgradeable.sol",
         "../proxy/utils/Initializable.sol"
       ],
       "versionPragmas": [
         "^0.8.20"
       ],
       "artifacts": [
-        "ReentrancyGuardUpgradeable"
+        "PausableUpgradeable"
+      ]
+    },
+    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\contracts\\LockedTransferManager.sol": {
+      "lastModificationDate": 1748100416959,
+      "contentHash": "9712d746b22768cfc2b0d225b5639db6",
+      "sourceName": "contracts/LockedTransferManager.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol",
+        "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol",
+        "../interfaces/ILockedTransferManager.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.24"
+      ],
+      "artifacts": [
+        "LockedTransferManager"
+      ]
+    },
+    "C:\\Users\\jesse\\OneDrive\\T3 Project\\T3-Base\\T3-Contract_v3_AVAX\\contracts\\InterbankLiabilityLedger.sol": {
+      "lastModificationDate": 1748104982512,
+      "contentHash": "91f223f008c529305a5fb6d7bde9915b",
+      "sourceName": "contracts/InterbankLiabilityLedger.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 150
+          },
+          "viaIR": true,
+          "debug": {
+            "revertStrings": "strip"
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol",
+        "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol",
+        "interfaces/IInterbankLiabilityLedger.sol",
+        "./CustodianRegistry.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.24"
+      ],
+      "artifacts": [
+        "InterbankLiabilityLedger"
       ]
     }
   }

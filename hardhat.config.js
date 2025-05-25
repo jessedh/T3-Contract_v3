@@ -6,6 +6,7 @@ require("@nomicfoundation/hardhat-chai-matchers");
 require('solidity-coverage');
 //added for gas reports
 require('hardhat-gas-reporter');
+require("hardhat-contract-sizer");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -14,9 +15,22 @@ module.exports = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 200,
+        runs: 150
       },
-    },
+      viaIR: true, // <--- Enable the new IR pipeline
+      debug: {
+        revertStrings: "strip", // Use "debug" to save space, or "default" for more detailed revert strings
+      }
+    }
+  },
+    contractSizer: {
+    alphaSort: true, // Sort contracts alphabetically
+    runOnCompile: true, // Automatically run after compilation
+    disambiguatePaths: false, // Don't show full path if contract name is unique
+    strict: false, // Don't throw an error if contracts exceed limit
+    outputFile: "contract-size-report.txt", // Output to a file
+    only: ["T3Token", "FeeCalculationLibrary", "LockedTransferManager", "InterbankLiabilityLedger", "CustodianRegistry"], // Only show these contracts
+    unit: "KiB" // Display in Kibibytes (KiB) or Bytes (B)
   },
   defaultNetwork: "hardhat",
   networks: {
