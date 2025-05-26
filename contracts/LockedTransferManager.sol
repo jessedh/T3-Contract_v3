@@ -5,54 +5,58 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol"; // For _transfer, if this contract will handle actual token transfers
-import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol"; // Import PausableUpgradeable
+import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 
-import "../interfaces/ILockedTransferManager.sol"; // Corrected import path for ILockedTransferManager.sol
+import "interfaces/ILockedTransferManager.sol";
+import "interfaces/ITokenConstants.sol";
 
 /**
  * @title LockedTransferManager
- * @dev Manages time-locked transfers using a fractionalized hash system.
- * This contract is designed to be deployed separately to reduce the main token contract's size.
+ * @dev Manages time-locked transfers using a hash-based mapping system.
+ * Optimized for gas efficiency and reduced contract size.
  */
-contract LockedTransferManager is Initializable, UUPSUpgradeable, AccessControlUpgradeable, ReentrancyGuardUpgradeable, PausableUpgradeable, ILockedTransferManager { // Added PausableUpgradeable to inheritance list
+contract LockedTransferManager is Initializable, UUPSUpgradeable, AccessControlUpgradeable, ReentrancyGuardUpgradeable, PausableUpgradeable, ILockedTransferManager {
 
     // --- Roles ---
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
-    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE"); // Assuming pausable functionality might be needed
+    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+    bytes32 public constant TOKEN_ROLE = keccak256("TOKEN_ROLE");
 
     // --- Mappings ---
     mapping(bytes32 => LockedTransfer) public lockedTransfers; // transferId => LockedTransfer
-    uint256 private nextLockedTransferId; // Counter for unique locked transfer IDs
 
-    // Reference to the T3Token contract (if it needs to call back for transfers)
-    ERC20Upgradeable private t3Token; // Using ERC20Upgradeable to call _transfer
+    // Reference to the T3Token contract
+    address private immutable _t3TokenAddress;
+
+    // Storage gap for future upgrades
+    uint256[50] private __gap;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() {
+    constructor(address t3TokenAddress) {
         _disableInitializers();
+        
+        // Store token address as immutable
+        require(t3TokenAddress != address(0), "T3Token address cannot be zero");
+        _t3TokenAddress = t3TokenAddress;
     }
 
-    function initialize(address initialAdmin, address _t3TokenAddress) public initializer {
+    function initialize(address initialAdmin) public initializer {
         __UUPSUpgradeable_init();
         __AccessControl_init();
         __ReentrancyGuard_init();
-        __Pausable_init(); // Initialize PausableUpgradeable
+        __Pausable_init();
 
         _grantRole(DEFAULT_ADMIN_ROLE, initialAdmin);
         _grantRole(ADMIN_ROLE, initialAdmin);
-        _grantRole(PAUSER_ROLE, initialAdmin); // Grant pauser role if needed
-
-        nextLockedTransferId = 1;
-        require(_t3TokenAddress != address(0), "T3Token address cannot be zero");
-        t3Token = ERC20Upgradeable(_t3TokenAddress);
+        _grantRole(PAUSER_ROLE, initialAdmin);
+        _grantRole(TOKEN_ROLE, _t3TokenAddress);
     }
 
     function _authorizeUpgrade(address newImplementation) internal override onlyRole(ADMIN_ROLE) {}
 
     /**
-     * @dev Creates a new time-locked transfer.
-     * This function would typically be called by the T3Token contract.
+     * @dev Creates a new time-locked transfer using a hash-based ID.
      * @param _sender The address initiating the locked transfer.
      * @param _recipient The recipient of the locked transfer.
      * @param _amount The amount to be locked.
@@ -68,16 +72,18 @@ contract LockedTransferManager is Initializable, UUPSUpgradeable, AccessControlU
         bytes32 _hashCommitment,
         bytes32 _nonce,
         address _releaseAuthorizedAddress
-    ) external override onlyRole(ADMIN_ROLE) nonReentrant returns (bytes32) { // Only admin/T3Token can create
-        // Placeholder for actual logic:
-        // In a real scenario, T3Token would transfer tokens to this contract first,
-        // or this contract would instruct T3Token to transfer.
-        // For now, we'll just record the transfer.
-
+    ) external override onlyRole(TOKEN_ROLE) nonReentrant whenNotPaused returns (bytes32) {
         if (_sender == address(0) || _recipient == address(0) || _releaseAuthorizedAddress == address(0)) revert ErrorZeroAddress();
         if (_amount == 0) revert ErrorAmountZero();
 
-        bytes32 transferId = keccak256(abi.encodePacked(nextLockedTransferId, _sender, _recipient, _amount, block.timestamp));
+        // Generate transfer ID directly from parameters instead of using a counter
+        bytes32 transferId = keccak256(abi.encodePacked(_sender, _recipient, _amount, _hashCommitment, _nonce, block.timestamp));
+        
+        // Ensure this ID hasn't been used before
+        if (lockedTransfers[transferId].sender != address(0)) {
+            // Extremely unlikely collision, but handle it by adding a random salt
+            transferId = keccak256(abi.encodePacked(transferId, blockhash(block.number - 1)));
+        }
         
         lockedTransfers[transferId] = LockedTransfer({
             sender: _sender,
@@ -90,8 +96,6 @@ contract LockedTransferManager is Initializable, UUPSUpgradeable, AccessControlU
             isCancelled: false
         });
 
-        nextLockedTransferId++; // Increment for the next transfer
-
         emit LockedTransferCreated(transferId, _sender, _recipient, _amount, _releaseAuthorizedAddress);
         return transferId;
     }
@@ -103,26 +107,34 @@ contract LockedTransferManager is Initializable, UUPSUpgradeable, AccessControlU
      * @param _revealedFragment The fragment needed to complete the hash commitment.
      * @return True if the release was successful.
      */
-    function releaseLockedTransfer(bytes32 _transferId, bytes32 _revealedFragment) external override nonReentrant returns (bool) {
+    function releaseLockedTransfer(bytes32 _transferId, bytes32 _revealedFragment) 
+        external 
+        override 
+        nonReentrant 
+        whenNotPaused 
+        returns (bool) 
+    {
         LockedTransfer storage transfer_ = lockedTransfers[_transferId];
 
-        if (transfer_.sender == address(0)) revert ErrorLockedTransferNotFound(); // Check if transfer exists
+        if (transfer_.sender == address(0)) revert ErrorLockedTransferNotFound();
         if (transfer_.isReleased) revert ErrorLockedTransferAlreadyReleased();
         if (transfer_.isCancelled) revert ErrorLockedTransferAlreadyCancelled();
         if (_msgSender() != transfer_.releaseAuthorizedAddress) revert ErrorReleaseNotAuthorized();
         if (keccak256(abi.encodePacked(_revealedFragment, transfer_.nonce)) != transfer_.hashCommitment) revert ErrorHashCommitmentMismatch();
 
-        // Placeholder for actual token transfer logic
-        // In a real scenario, this contract would transfer tokens from its balance
-        // (which were previously sent by T3Token or directly) to the recipient.
-        // For now, we'll simulate the transfer.
-        // Example: t3Token.transfer(transfer_.recipient, transfer_.amount);
-        // This requires the LockedTransferManager to hold T3Tokens or have allowance.
-        
-        // For demonstration, we'll assume this contract holds the tokens and transfers them.
-        t3Token.transfer(transfer_.recipient, transfer_.amount); // Assuming this contract holds the T3Tokens
-
+        // Mark as released before external call to prevent reentrancy
         transfer_.isReleased = true;
+        
+        // Transfer tokens from sender to recipient directly
+        // This assumes the T3Token has approved this contract to transfer on its behalf
+        bool success = ERC20Upgradeable(_t3TokenAddress).transferFrom(
+            transfer_.sender, 
+            transfer_.recipient, 
+            transfer_.amount
+        );
+        
+        require(success, "Token transfer failed");
+        
         emit LockedTransferReleased(_transferId, transfer_.recipient, transfer_.amount);
         return true;
     }
@@ -133,22 +145,82 @@ contract LockedTransferManager is Initializable, UUPSUpgradeable, AccessControlU
      * @param _transferId The ID of the locked transfer.
      * @return True if the cancellation was successful.
      */
-    function cancelLockedTransfer(bytes32 _transferId) external override nonReentrant returns (bool) {
+    function cancelLockedTransfer(bytes32 _transferId) 
+        external 
+        override 
+        nonReentrant 
+        whenNotPaused 
+        returns (bool) 
+    {
         LockedTransfer storage transfer_ = lockedTransfers[_transferId];
 
-        if (transfer_.sender == address(0)) revert ErrorLockedTransferNotFound(); // Check if transfer exists
+        if (transfer_.sender == address(0)) revert ErrorLockedTransferNotFound();
         if (transfer_.isReleased) revert ErrorLockedTransferAlreadyReleased();
         if (transfer_.isCancelled) revert ErrorLockedTransferAlreadyCancelled();
         if (_msgSender() != transfer_.sender && !hasRole(ADMIN_ROLE, _msgSender())) revert ErrorTransferNotCancellable();
 
-        // Placeholder for actual token return logic
-        // In a real scenario, this contract would transfer tokens back to the sender.
-        // Example: t3Token.transfer(transfer_.sender, transfer_.amount);
-        t3Token.transfer(transfer_.sender, transfer_.amount); // Assuming this contract holds the T3Tokens
-
+        // Mark as cancelled
         transfer_.isCancelled = true;
+        
         emit LockedTransferCancelled(_transferId);
         return true;
+    }
+
+    /**
+     * @dev Batch releases multiple locked transfers in a single transaction.
+     * @param _transferIds Array of transfer IDs to release.
+     * @param _revealedFragments Array of revealed fragments for each transfer.
+     * @return Array of booleans indicating success for each release.
+     */
+    function batchReleaseLockedTransfers(
+        bytes32[] calldata _transferIds,
+        bytes32[] calldata _revealedFragments
+    ) 
+        external 
+        nonReentrant 
+        whenNotPaused 
+        returns (bool[] memory) 
+    {
+        uint256 length = _transferIds.length;
+        require(length == _revealedFragments.length, "Array length mismatch");
+        
+        bool[] memory results = new bool[](length);
+        
+        for (uint256 i = 0; i < length;) {
+            bytes32 transferId = _transferIds[i];
+            bytes32 revealedFragment = _revealedFragments[i];
+            
+            LockedTransfer storage transfer_ = lockedTransfers[transferId];
+            
+            // Check all conditions
+            if (transfer_.sender == address(0) || 
+                transfer_.isReleased || 
+                transfer_.isCancelled || 
+                _msgSender() != transfer_.releaseAuthorizedAddress ||
+                keccak256(abi.encodePacked(revealedFragment, transfer_.nonce)) != transfer_.hashCommitment) {
+                results[i] = false;
+            } else {
+                // Mark as released
+                transfer_.isReleased = true;
+                
+                // Transfer tokens
+                bool success = ERC20Upgradeable(_t3TokenAddress).transferFrom(
+                    transfer_.sender, 
+                    transfer_.recipient, 
+                    transfer_.amount
+                );
+                
+                results[i] = success;
+                
+                if (success) {
+                    emit LockedTransferReleased(transferId, transfer_.recipient, transfer_.amount);
+                }
+            }
+            
+            unchecked { ++i; }
+        }
+        
+        return results;
     }
 
     /**
@@ -160,13 +232,7 @@ contract LockedTransferManager is Initializable, UUPSUpgradeable, AccessControlU
         return lockedTransfers[_transferId];
     }
 
-    // Admin function to set the T3Token address if it changes (e.g., after T3Token upgrade)
-    function setT3TokenAddress(address _newT3TokenAddress) external onlyRole(ADMIN_ROLE) {
-        require(_newT3TokenAddress != address(0), "New T3Token address cannot be zero");
-        t3Token = ERC20Upgradeable(_newT3TokenAddress);
-    }
-
-    // Pause/Unpause functions for this contract
+    // Pause/Unpause functions
     function pause() external onlyRole(PAUSER_ROLE) { _pause(); }
     function unpause() external onlyRole(PAUSER_ROLE) { _unpause(); }
 

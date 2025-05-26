@@ -1,46 +1,53 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24; // Keeping your pragma
+pragma solidity ^0.8.24;
 
-// Using Upgradeable OpenZeppelin Contracts
-import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
-import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol"; // Note: This is a non-upgradeable import
+import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 
 /**
  * @title CustodianRegistry - Upgradeable Version
  * @dev Manages the registration of user wallets custodied by authorized Financial Institutions (FIs).
  * Stores KYC status timestamps associated with registered wallets.
- * Uses AccessControlUpgradeable:
- * - ADMIN_ROLE: Can grant/revoke CUSTODIAN_ROLE to FIs.
- * - CUSTODIAN_ROLE: Granted to FIs, allows them to register/update wallets they custody.
- * Designed for UUPS proxy.
+ * Optimized for gas efficiency and reduced contract size.
  */
 contract CustodianRegistry is Initializable, AccessControlUpgradeable, UUPSUpgradeable {
-    using EnumerableSet for EnumerableSet.AddressSet;
 
     // --- Roles ---
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
     bytes32 public constant CUSTODIAN_ROLE = keccak256("CUSTODIAN_ROLE");
 
+    // --- Custom Errors ---
+    error ZeroAddress();
+    error KYCExpiryBeforeValidation();
+    error WalletAlreadyRegistered();
+    error NotRegisteredCustodian();
+    error WalletNotRegistered();
+    error AccessControlBadAdmin(address admin);
+
     // --- Data Structures ---
+    // Optimized struct with smaller uint types for timestamps
     struct CustodyData {
-        address custodian; // Address of the FI acting as custodian
-        uint256 kycValidatedTimestamp; // Timestamp when KYC was last validated by custodian
-        uint256 kycExpiresTimestamp;   // Timestamp when KYC validation expires (0 if never expires)
+        address custodian;           // Address of the FI acting as custodian
+        uint40 kycValidatedTimestamp; // Timestamp when KYC was last validated (reduced from uint256)
+        uint40 kycExpiresTimestamp;   // Timestamp when KYC validation expires (reduced from uint256)
+        uint176 reserved;            // Reserved space for future use, maintains full slot packing
     }
 
     // --- State Variables ---
     // Mapping from user address to their custody data
     mapping(address => CustodyData) private _custodyInfo;
 
-    // Optional: Keep track of all registered custodians for transparency
-    EnumerableSet.AddressSet private _custodians; // Tracks addresses that have CUSTODIAN_ROLE
-
     // --- Events ---
-    event WalletRegistered(address indexed userAddress, address indexed custodian, uint256 kycValidatedTimestamp, uint256 kycExpiresTimestamp);
+    // Indexed key parameters for more efficient off-chain filtering
+    event WalletRegistered(address indexed userAddress, address indexed custodian, uint40 kycValidatedTimestamp, uint40 kycExpiresTimestamp);
     event WalletUnregistered(address indexed userAddress, address indexed custodian);
-    event KYCStatusUpdated(address indexed userAddress, address indexed custodian, uint256 kycValidatedTimestamp, uint256 kycExpiresTimestamp);
+    event KYCStatusUpdated(address indexed userAddress, address indexed custodian, uint40 kycValidatedTimestamp, uint40 kycExpiresTimestamp);
+    event BulkWalletsRegistered(address indexed custodian, uint256 count);
+
+    // Storage gap for future upgrades
+    uint256[50] private __gap;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -52,8 +59,6 @@ contract CustodianRegistry is Initializable, AccessControlUpgradeable, UUPSUpgra
      * This function replaces the constructor for upgradeable contracts.
      * Grants ADMIN_ROLE and DEFAULT_ADMIN_ROLE to the initialAdmin.
      */
-    error AccessControlBadAdmin(address admin);
-
     function initialize(address initialAdmin) public initializer {
         if (initialAdmin == address(0)) {
             revert AccessControlBadAdmin(initialAdmin);
@@ -72,7 +77,7 @@ contract CustodianRegistry is Initializable, AccessControlUpgradeable, UUPSUpgra
     function _authorizeUpgrade(address newImplementation)
         internal
         override
-        onlyRole(ADMIN_ROLE) // Or DEFAULT_ADMIN_ROLE if preferred for upgrade control
+        onlyRole(ADMIN_ROLE)
     {
         // This function intentionally left empty to allow upgrades authorized by ADMIN_ROLE.
     }
@@ -80,49 +85,88 @@ contract CustodianRegistry is Initializable, AccessControlUpgradeable, UUPSUpgra
     // --- Role Management (by Admin) ---
 
     function grantCustodianRole(address fiAddress) external onlyRole(ADMIN_ROLE) {
-        require(fiAddress != address(0), "Custodian cannot be zero address");
+        if (fiAddress == address(0)) revert ZeroAddress();
         _grantRole(CUSTODIAN_ROLE, fiAddress);
-        _custodians.add(fiAddress); // Add to enumerable set for tracking
     }
 
     function revokeCustodianRole(address fiAddress) external onlyRole(ADMIN_ROLE) {
-        require(fiAddress != address(0), "Custodian cannot be zero address");
+        if (fiAddress == address(0)) revert ZeroAddress();
         _revokeRole(CUSTODIAN_ROLE, fiAddress);
-        _custodians.remove(fiAddress); // Remove from enumerable set
     }
 
     // --- Custodian Actions ---
 
     function registerCustodiedWallet(
         address userAddress,
-        uint256 kycValidatedTimestamp,
-        uint256 kycExpiresTimestamp
+        uint40 kycValidatedTimestamp,
+        uint40 kycExpiresTimestamp
     ) external onlyRole(CUSTODIAN_ROLE) {
-        require(userAddress != address(0), "User address cannot be zero");
-        require(kycExpiresTimestamp == 0 || kycExpiresTimestamp >= kycValidatedTimestamp, "KYC expiry before validation");
-        require(_custodyInfo[userAddress].custodian == address(0), "Wallet already registered"); // Prevent re-registration
+        if (userAddress == address(0)) revert ZeroAddress();
+        if (kycExpiresTimestamp != 0 && kycExpiresTimestamp < kycValidatedTimestamp) revert KYCExpiryBeforeValidation();
+        if (_custodyInfo[userAddress].custodian != address(0)) revert WalletAlreadyRegistered();
 
         address custodian = _msgSender();
         _custodyInfo[userAddress] = CustodyData({
             custodian: custodian,
             kycValidatedTimestamp: kycValidatedTimestamp,
-            kycExpiresTimestamp: kycExpiresTimestamp
+            kycExpiresTimestamp: kycExpiresTimestamp,
+            reserved: 0
         });
 
         emit WalletRegistered(userAddress, custodian, kycValidatedTimestamp, kycExpiresTimestamp);
     }
 
+    /**
+     * @dev Registers multiple wallets in a single transaction to save gas
+     * @param userAddresses Array of wallet addresses to register
+     * @param kycValidatedTimestamps Array of KYC validation timestamps
+     * @param kycExpiresTimestamps Array of KYC expiry timestamps
+     */
+    function bulkRegisterWallets(
+        address[] calldata userAddresses,
+        uint40[] calldata kycValidatedTimestamps,
+        uint40[] calldata kycExpiresTimestamps
+    ) external onlyRole(CUSTODIAN_ROLE) {
+        uint256 length = userAddresses.length;
+        if (length != kycValidatedTimestamps.length || length != kycExpiresTimestamps.length) revert();
+        
+        address custodian = _msgSender();
+        
+        for (uint256 i = 0; i < length;) {
+            address userAddress = userAddresses[i];
+            uint40 validatedTimestamp = kycValidatedTimestamps[i];
+            uint40 expiresTimestamp = kycExpiresTimestamps[i];
+            
+            if (userAddress == address(0)) revert ZeroAddress();
+            if (expiresTimestamp != 0 && expiresTimestamp < validatedTimestamp) revert KYCExpiryBeforeValidation();
+            if (_custodyInfo[userAddress].custodian != address(0)) revert WalletAlreadyRegistered();
+            
+            _custodyInfo[userAddress] = CustodyData({
+                custodian: custodian,
+                kycValidatedTimestamp: validatedTimestamp,
+                kycExpiresTimestamp: expiresTimestamp,
+                reserved: 0
+            });
+            
+            emit WalletRegistered(userAddress, custodian, validatedTimestamp, expiresTimestamp);
+            
+            unchecked { ++i; }
+        }
+        
+        emit BulkWalletsRegistered(custodian, length);
+    }
+
     function updateKYCStatus(
         address userAddress,
-        uint256 kycValidatedTimestamp,
-        uint256 kycExpiresTimestamp
+        uint40 kycValidatedTimestamp,
+        uint40 kycExpiresTimestamp
     ) external onlyRole(CUSTODIAN_ROLE) {
-        require(userAddress != address(0), "User address cannot be zero");
+        if (userAddress == address(0)) revert ZeroAddress();
         address custodian = _msgSender();
         CustodyData storage data = _custodyInfo[userAddress];
 
-        require(data.custodian == custodian, "Caller is not the registered custodian");
-        require(kycExpiresTimestamp == 0 || kycExpiresTimestamp >= kycValidatedTimestamp, "KYC expiry before validation");
+        if (data.custodian != custodian) revert NotRegisteredCustodian();
+        if (kycExpiresTimestamp != 0 && kycExpiresTimestamp < kycValidatedTimestamp) revert KYCExpiryBeforeValidation();
 
         data.kycValidatedTimestamp = kycValidatedTimestamp;
         data.kycExpiresTimestamp = kycExpiresTimestamp;
@@ -131,12 +175,12 @@ contract CustodianRegistry is Initializable, AccessControlUpgradeable, UUPSUpgra
     }
 
     function unregisterCustodiedWallet(address userAddress) external onlyRole(CUSTODIAN_ROLE) {
-        require(userAddress != address(0), "User address cannot be zero");
+        if (userAddress == address(0)) revert ZeroAddress();
         address custodian = _msgSender();
         CustodyData storage data = _custodyInfo[userAddress];
 
-        require(data.custodian == custodian, "Caller is not the registered custodian");
-        require(data.custodian != address(0), "Wallet not registered"); // Ensure it exists before deleting
+        if (data.custodian != custodian) revert NotRegisteredCustodian();
+        if (data.custodian == address(0)) revert WalletNotRegistered();
 
         delete _custodyInfo[userAddress];
         emit WalletUnregistered(userAddress, custodian);
@@ -148,7 +192,7 @@ contract CustodianRegistry is Initializable, AccessControlUpgradeable, UUPSUpgra
         return _custodyInfo[userAddress].custodian;
     }
 
-    function getKYCTimestamps(address userAddress) external view returns (uint256 validatedTimestamp, uint256 expiresTimestamp) {
+    function getKYCTimestamps(address userAddress) external view returns (uint40 validatedTimestamp, uint40 expiresTimestamp) {
         CustodyData storage data = _custodyInfo[userAddress];
         return (data.kycValidatedTimestamp, data.kycExpiresTimestamp);
     }
@@ -168,18 +212,8 @@ contract CustodianRegistry is Initializable, AccessControlUpgradeable, UUPSUpgra
         return (
             data.custodian != address(0) &&
             data.kycValidatedTimestamp > 0 && 
-            (data.kycExpiresTimestamp == 0 || data.kycExpiresTimestamp >= block.timestamp)
+            (data.kycExpiresTimestamp == 0 || data.kycExpiresTimestamp >= uint40(block.timestamp))
         );
-    }
-
-    // --- Optional: Functions for tracking custodians ---
-
-    function custodianCount() external view returns (uint256) {
-        return _custodians.length();
-    }
-
-    function custodianAtIndex(uint256 index) external view returns (address) {
-        return _custodians.at(index);
     }
 
     // --- AccessControl Setup ---
@@ -190,10 +224,9 @@ contract CustodianRegistry is Initializable, AccessControlUpgradeable, UUPSUpgra
         public
         view
         virtual
-        override(AccessControlUpgradeable) // Corrected for direct parents
+        override(AccessControlUpgradeable)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
     }
 }
-//the end

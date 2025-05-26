@@ -15,7 +15,7 @@ module.exports = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 150
+        runs: 75
       },
       viaIR: true, // <--- Enable the new IR pipeline
       debug: {
